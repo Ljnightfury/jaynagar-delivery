@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaynagar Food Delivery</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input, textarea, select { width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; }
+        button { background-color: #28a745; color: white; padding: 10px 15px; border: none; width: 100%; cursor: pointer; font-size: 16px; }
+        .location-btn { background-color: #007bff; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <h2>Order Your Food 🛵</h2>
+    <p>Fast delivery right to your door in Jaynagar.</p>
+
+    <form id="orderForm">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="phone">WhatsApp Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="restaurant">Choose Restaurant:</label>
+        <select id="restaurant" name="restaurant">
+            <option value="Bollywood Cafe">Bollywood Cafe</option>
+            <option value="Biryani Darbar">Biryani Darbar</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="order">What would you like to order?</label>
+        <textarea id="order" name="order" rows="3" required></textarea>
+
+        <button type="button" class="location-btn" onclick="getLocation()">📍 Tap to share your exact location</button>
+        <p id="locationStatus" style="font-size: 12px; color: gray;"></p>
+        
+        <input type="hidden" id="gps" name="gps">
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <script>
+        function getLocation() {
+            const status = document.getElementById('locationStatus');
+            const gpsInput = document.getElementById('gps');
+
+            if (!navigator.geolocation) {
+                status.textContent = 'Geolocation is not supported by your browser';
+            } else {
+                status.textContent = 'Locating...';
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+
+            function success(position) {
+                const latitude  = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                gpsInput.value = `${latitude}, ${longitude}`;
+                status.textContent = '✅ Location captured successfully!';
+                status.style.color = 'green';
+            }
+
+            function error() {
+                status.textContent = '❌ Unable to retrieve your location. Please ensure location services are turned on.';
+                status.style.color = 'red';
+            }
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const form = document.getElementById('orderForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            submitButton.textContent = "Sending Order...";
+            submitButton.disabled = true;
+
+            const formData = new FormData(form);
+            
+            // IMPORTANT: PASTE YOUR GOOGLE SCRIPT WEB APP URL HERE
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbylEmzsHUJJ5KtS7thK69MMJid2MXMkoNlOs4MIvv0RvHU5wt-5UdWl_Tfwpn-nmpOz/exec';
+
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    alert("✅ Order Placed Successfully! We are preparing your food.");
+                    form.reset();
+                    submitButton.textContent = "Place Order";
+                    submitButton.disabled = false;
+                    document.getElementById('locationStatus').textContent = '';
+                })
+                .catch(error => {
+                    alert("❌ Error placing order. Please try again.");
+                    submitButton.textContent = "Place Order";
+                    submitButton.disabled = false;
+                });
+        });
+    </script>
+
+</body>
+</html>
