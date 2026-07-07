@@ -5,99 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jaynagar Delivery</title>
     <style>
-        /* Modern App Styling */
-        :root {
-            --primary: #fc8019; /* Swiggy-style orange */
-            --bg: #f4f4f5;
-            --text: #282c3f;
-            --white: #ffffff;
-            --gray: #7e808c;
-        }
+        :root { --primary: #fc8019; --bg: #f4f4f5; --text: #282c3f; --white: #ffffff; --gray: #7e808c; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg); color: var(--text); -webkit-tap-highlight-color: transparent; }
         
-        /* App Container for mobile look even on desktop */
         .app-container { max-width: 480px; margin: 0 auto; background: var(--white); min-height: 100vh; position: relative; overflow-x: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
         
-        /* Headers */
         .header { background: var(--white); padding: 15px 20px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: flex; align-items: center; }
         .header h1 { font-size: 20px; font-weight: 700; color: var(--text); flex-grow: 1; }
-        .back-btn { font-size: 24px; font-weight: bold; margin-right: 15px; text-decoration: none; color: var(--text); display: none; cursor: pointer; }
+        .back-btn { font-size: 24px; font-weight: bold; margin-right: 15px; color: var(--text); display: none; cursor: pointer; }
         
-        /* Screens */
-        .screen { display: none; padding-bottom: 80px; animation: fadeIn 0.3s ease; }
+        .screen { display: none; padding-bottom: 100px; animation: fadeIn 0.3s ease; min-height: 80vh; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Home Page - Restaurants */
         .section-title { padding: 20px 20px 10px; font-size: 18px; font-weight: 700; }
-        .restaurant-card { display: flex; margin: 15px 20px; padding: 15px; border-radius: 16px; background: var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
-        .restaurant-card:active { transform: scale(0.98); }
+        
+        /* Restaurant Cards */
+        .restaurant-card { display: flex; margin: 15px 20px; padding: 15px; border-radius: 16px; background: var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eee; cursor: pointer; }
         .rest-emoji { font-size: 40px; background: #fdf2ea; padding: 15px; border-radius: 12px; margin-right: 15px; }
         .rest-info h3 { font-size: 18px; margin-bottom: 5px; }
         .rest-info p { color: var(--gray); font-size: 13px; }
 
-        /* Menu Page */
+        /* Menu Items */
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0; }
-        .item-details h4 { font-size: 16px; margin-bottom: 5px; }
-        .item-price { font-weight: 600; color: #3e4152; }
-        .add-btn-wrapper { background: var(--white); border: 1px solid #d4d5d9; border-radius: 8px; color: #60b246; font-weight: 700; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .add-btn-wrapper span, .add-btn-wrapper button { padding: 8px 12px; text-align: center; font-size: 16px; cursor: pointer; background: none; border: none; color: #60b246; font-weight: bold; }
-        
-        /* Floating Cart Bar */
-        .floating-cart { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #60b246; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; cursor: pointer; display: none; }
-        .floating-cart h3 { font-size: 16px; }
+        .item-info { flex: 1; padding-right: 15px; }
+        .item-info h4 { font-size: 16px; margin-bottom: 5px; }
+        .item-price { font-weight: 600; color: #3e4152; margin-bottom: 8px; }
+        .item-img { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; background: #eee; }
+        .item-controls { display: flex; flex-direction: column; align-items: center; }
+        .add-btn-wrapper { background: var(--white); border: 1px solid #d4d5d9; border-radius: 8px; color: #60b246; font-weight: 700; display: flex; align-items: center; margin-top: -15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .add-btn-wrapper button { padding: 8px 12px; font-size: 16px; cursor: pointer; background: none; border: none; color: #60b246; font-weight: bold; }
+        .add-btn-wrapper span { padding: 8px 0; min-width: 20px; text-align: center; }
 
-        /* Checkout Page */
-        .bill-card { margin: 20px; background: var(--white); border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px dashed #d4d5d9; }
+        /* Checkout & Forms */
+        .bill-card { margin: 20px; background: var(--white); border-radius: 16px; padding: 20px; border: 1px dashed #d4d5d9; }
         .bill-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: var(--gray); }
         .bill-total { border-top: 1px solid #eee; margin-top: 10px; padding-top: 15px; font-weight: 700; color: var(--text); font-size: 18px; }
-        
-        .form-group { padding: 0 20px 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #3e4152; }
-        .form-group input[type="text"], .form-group input[type="number"] { width: 100%; padding: 15px; border: 1px solid #d4d5d9; border-radius: 12px; font-size: 15px; outline: none; background: #f9f9f9; }
-        .form-group input:focus { border-color: var(--primary); background: var(--white); }
-        
-        .payment-options { display: flex; gap: 10px; padding: 0 20px 20px; }
-        .pay-btn { flex: 1; padding: 15px; border: 1px solid #d4d5d9; border-radius: 12px; text-align: center; font-weight: 600; color: var(--gray); cursor: pointer; transition: 0.2s; }
-        .pay-btn.selected { border-color: var(--primary); background: #fff4eb; color: var(--primary); }
+        .form-group { padding: 0 20px 15px; }
+        .form-group input { width: 100%; padding: 15px; border: 1px solid #d4d5d9; border-radius: 12px; font-size: 15px; outline: none; background: #f9f9f9; }
+        .location-btn { background: #e2f0fb; color: #007aff; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 600; font-size: 15px; margin-bottom: 20px; }
+        .place-order-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 12px; width: calc(100% - 40px); margin: 0 20px 20px; font-weight: 700; font-size: 16px; text-transform: uppercase; width: 100%; }
 
-        .location-btn { background: #e2f0fb; color: #007aff; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 600; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; cursor: pointer; }
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: var(--white); display: flex; justify-content: space-around; padding: 12px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100; border-top: 1px solid #eee; }
+        .nav-item { text-align: center; font-size: 12px; color: var(--gray); cursor: pointer; flex: 1; }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
+        .nav-icon { font-size: 22px; margin-bottom: 4px; display: block; }
         
-        .place-order-btn { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 12px; width: calc(100% - 40px); margin: 0 20px 20px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(252, 128, 25, 0.3); text-transform: uppercase; }
-        .place-order-btn:disabled { background: #d4d5d9; box-shadow: none; }
+        /* Floating Cart Bar */
+        .floating-cart { position: fixed; bottom: 70px; left: 20px; right: 20px; max-width: 440px; margin: 0 auto; background: #60b246; color: white; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; z-index: 99; cursor: pointer; display: none; box-shadow: 0 4px 12px rgba(96,178,70,0.3); }
+        
+        /* Support & Track */
+        .support-btn { display: flex; align-items: center; justify-content: center; padding: 16px; border-radius: 12px; margin: 0 20px 15px; text-decoration: none; font-weight: bold; color: white; font-size: 16px; }
+        .btn-wa { background: #25D366; }
+        .btn-call { background: #34B7F1; }
+        .btn-email { background: #EA4335; }
+        .track-box { margin: 20px; padding: 20px; border-radius: 16px; background: #f9f9f9; border: 1px solid #eee; text-align: center; }
+        #trackResult { margin-top: 15px; font-weight: bold; color: var(--primary); font-size: 18px; }
 
         /* Loader */
-        #loader { display: none; text-align: center; padding: 40px; font-weight: bold; color: var(--primary); }
+        #loader { text-align: center; padding: 40px; color: var(--primary); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    
-    <!-- HEADER -->
     <div class="header">
         <div class="back-btn" id="backBtn" onclick="goBack()">←</div>
         <h1 id="headerTitle">Jaynagar Delivery</h1>
     </div>
 
-    <!-- HOME SCREEN: Restaurants -->
+    <!-- HOME SCREEN -->
     <div id="homeScreen" class="screen active">
-        <div class="section-title">Restaurants near you</div>
-        
-        <div class="restaurant-card" onclick="openMenu('Biryani Darbar')">
-            <div class="rest-emoji">🍲</div>
-            <div class="rest-info">
-                <h3>Biryani Darbar</h3>
-                <p>North Indian, Biryani • 30-40 mins</p>
+        <div id="loader">Loading Live Menu...</div>
+        <div id="restContainer" style="display:none;">
+            <div class="section-title">Restaurants near you</div>
+            <div class="restaurant-card" onclick="openMenu('Biryani Darbar')">
+                <div class="rest-emoji">🍲</div>
+                <div class="rest-info"><h3>Biryani Darbar</h3><p>North Indian, Biryani • 30-40 mins</p></div>
             </div>
-        </div>
-
-        <div class="restaurant-card" onclick="openMenu('Bollywood Cafe')">
-            <div class="rest-emoji">☕</div>
-            <div class="rest-info">
-                <h3>Bollywood Cafe</h3>
-                <p>Snacks, Beverages, Fast Food • 25-30 mins</p>
+            <div class="restaurant-card" onclick="openMenu('Bollywood Cafe')">
+                <div class="rest-emoji">🍔</div>
+                <div class="rest-info"><h3>Bollywood Cafe</h3><p>Snacks, Fast Food • 25-30 mins</p></div>
             </div>
         </div>
     </div>
@@ -110,140 +100,159 @@
     <!-- CHECKOUT SCREEN -->
     <div id="checkoutScreen" class="screen">
         <div class="section-title">Order Summary</div>
-        <div id="checkoutItems" style="padding: 0 20px; margin-bottom: 10px; font-size: 14px; font-weight: 500;"></div>
+        <div id="checkoutItems" style="padding: 0 20px; margin-bottom: 10px; font-size: 14px;"></div>
         
         <div class="bill-card">
             <div class="bill-row"><span>Item Total</span><span id="billSubtotal">₹0</span></div>
             <div class="bill-row"><span>GST (5%)</span><span id="billGst">₹0</span></div>
-            <div class="bill-row"><span>Delivery Partner Fee</span><span id="billDelivery">₹20</span></div>
+            <div class="bill-row"><span id="deliveryLabel">Delivery Fee</span><span id="billDelivery">₹--</span></div>
             <div class="bill-row bill-total"><span>To Pay</span><span id="billTotal">₹0</span></div>
         </div>
 
-        <div class="section-title">Personal Details</div>
         <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="custName" placeholder="Enter your name" required>
+            <input type="text" id="custName" placeholder="Full Name" required>
         </div>
         <div class="form-group">
-            <label>Phone Number</label>
-            <input type="number" id="custPhone" placeholder="Enter your phone number" required>
+            <input type="number" id="custPhone" placeholder="Phone Number (10 digits)" required>
         </div>
 
         <div style="padding: 0 20px;">
-            <button type="button" class="location-btn" id="locBtn" onclick="getLocation()">
-                📍 Tap to fetch exact delivery location
-            </button>
+            <button class="location-btn" id="locBtn" onclick="getLocation()">📍 Tap to calculate delivery distance</button>
         </div>
 
-        <div class="section-title">Payment Method</div>
-        <div class="payment-options">
-            <div class="pay-btn selected" id="payUPI" onclick="selectPayment('UPI')">UPI / Online</div>
-            <div class="pay-btn" id="payCOD" onclick="selectPayment('COD')">Cash on Delivery</div>
+        <div style="padding: 0 20px;">
+            <button class="place-order-btn" id="submitBtn" onclick="submitOrder()" disabled style="opacity: 0.5;">Select Location First</button>
         </div>
+    </div>
 
-        <button class="place-order-btn" id="submitBtn" onclick="submitOrder()">Place Order • <span id="btnTotal">₹0</span></button>
-        <div id="loader">Processing your order... Please wait.</div>
+    <!-- TRACK SCREEN -->
+    <div id="trackScreen" class="screen">
+        <div class="section-title">Track Your Order</div>
+        <div class="form-group"><input type="number" id="trackPhone" placeholder="Enter your phone number"></div>
+        <div style="padding: 0 20px;"><button class="place-order-btn" onclick="trackOrder()">Get Live Status</button></div>
+        <div class="track-box" id="trackBox" style="display:none;">
+            Current Status:<br><span id="trackResult">Loading...</span>
+        </div>
+    </div>
+
+    <!-- SUPPORT SCREEN -->
+    <div id="supportScreen" class="screen">
+        <div class="section-title" style="text-align: center; margin-bottom: 20px;">How can we help?</div>
+        <a href="https://wa.me/918851463530?text=Hi%20Jaynagar%20Delivery%2C%20I%20need%20help%20with%20my%20order" class="support-btn btn-wa">💬 WhatsApp Lucky</a>
+        <a href="tel:+916206671465" class="support-btn btn-call">📞 Call Dispatch (Aunt)</a>
+        <a href="mailto:dragonlj6@gmail.com" class="support-btn btn-email">✉️ Email Support</a>
     </div>
 
     <!-- SUCCESS SCREEN -->
-    <div id="successScreen" class="screen" style="text-align: center; padding-top: 100px;">
+    <div id="successScreen" class="screen" style="text-align: center; padding-top: 80px;">
         <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
-        <h2 style="color: #60b246; margin-bottom: 10px;">Order Placed!</h2>
-        <p style="color: var(--gray); margin-bottom: 30px;">The restaurant has received your order.</p>
-        <button onclick="location.reload()" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer;">Place Another Order</button>
+        <h2 style="color: #60b246;">Order Placed!</h2>
+        <p style="color: var(--gray); margin: 10px 0 30px;">Track your order status from the Track menu.</p>
+        <button onclick="location.reload()" style="background: var(--primary); color: white; border:none; padding:12px 24px; border-radius:8px; font-weight:bold;">Home</button>
     </div>
 
-    <!-- FLOATING CART BAR -->
+    <!-- FLOATING CART -->
     <div class="floating-cart" id="floatingCart" onclick="openCheckout()">
-        <h3 id="cartCount">1 item | ₹150</h3>
-        <h3 style="display: flex; align-items: center;">View Cart <span>→</span></h3>
+        <h3 id="cartCount">1 item | ₹0</h3>
+        <h3>View Cart →</h3>
     </div>
 
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav" id="bottomNav">
+        <div class="nav-item active" id="nav-home" onclick="switchTab('home')"><span class="nav-icon">🏠</span>Home</div>
+        <div class="nav-item" id="nav-track" onclick="switchTab('track')"><span class="nav-icon">📍</span>Track</div>
+        <div class="nav-item" id="nav-support" onclick="switchTab('support')"><span class="nav-icon">🎧</span>Support</div>
+    </div>
 </div>
 
-<!-- HIDDEN FORM FOR GOOGLE SHEETS -->
-<form id="googleForm" style="display: none;">
-    <input type="text" name="Customer Name" id="formName">
-    <input type="text" name="Phone Number" id="formPhone">
-    <input type="text" name="Restaurant" id="formRest">
-    <input type="text" name="Order Details" id="formDetails">
-    <input type="text" name="Total Bill (₹)" id="formTotal">
-    <input type="text" name="Delivery Fee (₹)" id="formDelivery">
-    <input type="text" name="GPS Coordinates" id="formGps">
-    <input type="text" name="Status" value="Pending">
-</form>
-
 <script>
-    // 1. Google Script URL (Pre-installed for you!)
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbylEmzsHUJJ5KtS7thK69MMJid2MXMkoNlOs4MIvv0RvHU5wt-5UdWl_Tfwpn-nmpOz/exec';
+    // System Config
+    const scriptURL = 'https://script.google.com/macros/s/AKfycby5pOYHki5Y9-NR115RsVqDPlGTUSRjCQ8u2q5YtUCLgT0Ko9KF00EjHdOENDjabTol/exec';
+    
+    // Restaurant Coordinates (Jainagar Center coordinates roughly)
+    const REST_LAT = 26.5861; 
+    const REST_LON = 86.1293;
 
-    // 2. Menu Data
-    const menus = {
-        'Biryani Darbar': [
-            { id: 'b1', name: 'Chicken Dum Biryani', price: 180 },
-            { id: 'b2', name: 'Mutton Biryani', price: 250 },
-            { id: 'b3', name: 'Paneer Tikka', price: 120 },
-            { id: 'b4', name: 'Cold Drink (250ml)', price: 20 }
-        ],
-        'Bollywood Cafe': [
-            { id: 'c1', name: 'Coffee and tea', price: 40 },
-            { id: 'c2', name: 'Aloo Tikki Burger', price: 60 },
-            { id: 'c3', name: 'Cheese Pizza', price: 150 },
-            { id: 'c4', name: 'French Fries', price: 80 }
-        ]
-    };
-
-    // State Variables
+    let liveMenu = [];
     let currentRest = '';
     let cart = {};
-    let currentPayment = 'UPI';
+    let finalDeliveryFee = 0;
     let userLocation = '';
+    let distanceKm = 0;
 
-    // Navigation Logic
-    function showScreen(screenId, title, showBack) {
+    // 1. Fetch Menu on Load
+    window.onload = function() {
+        fetch(scriptURL + "?action=getMenu")
+            .then(res => res.json())
+            .then(data => {
+                liveMenu = data;
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('restContainer').style.display = 'block';
+            })
+            .catch(err => {
+                document.getElementById('loader').innerText = "Failed to load menu. Please refresh.";
+            });
+    }
+
+    // 2. Navigation
+    function switchTab(tab) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-        document.getElementById('headerTitle').innerText = title;
-        document.getElementById('backBtn').style.display = showBack ? 'block' : 'none';
-        
-        if(screenId === 'homeScreen') {
-            document.getElementById('floatingCart').style.display = 'none';
-            cart = {}; // Clear cart on home
-        } else {
-            updateCartUI();
-        }
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(tab + 'Screen').classList.add('active');
+        document.getElementById('nav-' + tab).classList.add('active');
+        document.getElementById('headerTitle').innerText = tab === 'home' ? 'Jaynagar Delivery' : (tab === 'track' ? 'Live Tracking' : 'Customer Care');
+        document.getElementById('backBtn').style.display = 'none';
+        updateCartUI();
     }
 
     function goBack() {
         if(document.getElementById('checkoutScreen').classList.contains('active')) {
             showScreen('menuScreen', currentRest, true);
         } else {
-            showScreen('homeScreen', 'Jaynagar Delivery', false);
+            switchTab('home');
         }
     }
 
-    // Menu Logic
+    function showScreen(screenId, title, showBack) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        document.getElementById('headerTitle').innerText = title;
+        document.getElementById('backBtn').style.display = showBack ? 'block' : 'none';
+        updateCartUI();
+    }
+
+    // 3. Menu Logic
     function openMenu(restaurant) {
         currentRest = restaurant;
-        cart = {}; // Reset cart for new restaurant
+        cart = {}; 
         const container = document.getElementById('menuItemsContainer');
         container.innerHTML = '';
         
-        menus[restaurant].forEach(item => {
-            container.innerHTML += `
-                <div class="menu-item">
-                    <div class="item-details">
-                        <h4>${item.name}</h4>
-                        <div class="item-price">₹${item.price}</div>
+        let hasItems = false;
+        liveMenu.forEach((item, index) => {
+            if(item.restaurant === restaurant) {
+                hasItems = true;
+                const imgHTML = item.image ? `<img src="${item.image}" class="item-img">` : `<div class="item-img"></div>`;
+                container.innerHTML += `
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <div class="item-price">₹${item.price}</div>
+                        </div>
+                        <div class="item-controls">
+                            ${imgHTML}
+                            <div class="add-btn-wrapper">
+                                <button onclick="updateQty('${index}', '${item.name}', ${item.price}, -1)">-</button>
+                                <span id="qty-${index}">0</span>
+                                <button onclick="updateQty('${index}', '${item.name}', ${item.price}, 1)">+</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="add-btn-wrapper">
-                        <button onclick="updateQty('${item.id}', '${item.name}', ${item.price}, -1)">-</button>
-                        <span id="qty-${item.id}">0</span>
-                        <button onclick="updateQty('${item.id}', '${item.name}', ${item.price}, 1)">+</button>
-                    </div>
-                </div>
-            `;
+                `;
+            }
         });
+
+        if(!hasItems) container.innerHTML = "<p style='padding:20px; text-align:center;'>Menu updating soon!</p>";
         showScreen('menuScreen', restaurant, true);
     }
 
@@ -251,133 +260,114 @@
         if (!cart[id]) cart[id] = { name: name, price: price, qty: 0 };
         cart[id].qty += change;
         if (cart[id].qty <= 0) delete cart[id];
-        
         document.getElementById(`qty-${id}`).innerText = cart[id] ? cart[id].qty : 0;
         updateCartUI();
+        
+        // Reset location if they modify cart so delivery fee recalculates properly
+        userLocation = '';
+        document.getElementById('locBtn').innerText = '📍 Tap to calculate delivery distance';
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitBtn').style.opacity = '0.5';
+        document.getElementById('submitBtn').innerText = 'Select Location First';
     }
 
-    // Cart & Checkout Logic
+    // 4. Cart & Distance Engine
     function updateCartUI() {
-        let totalItems = 0;
-        let itemTotal = 0;
+        let totalItems = 0; let itemTotal = 0;
+        for (let id in cart) { totalItems += cart[id].qty; itemTotal += (cart[id].qty * cart[id].price); }
         
-        for (let id in cart) {
-            totalItems += cart[id].qty;
-            itemTotal += (cart[id].qty * cart[id].price);
-        }
-
         const cartBar = document.getElementById('floatingCart');
-        if (totalItems > 0 && !document.getElementById('checkoutScreen').classList.contains('active') && !document.getElementById('successScreen').classList.contains('active')) {
+        const activeScreen = document.querySelector('.screen.active').id;
+        
+        if (totalItems > 0 && activeScreen !== 'checkoutScreen' && activeScreen !== 'successScreen') {
             cartBar.style.display = 'flex';
             document.getElementById('cartCount').innerText = `${totalItems} item(s) | ₹${itemTotal}`;
+            document.getElementById('bottomNav').style.display = 'none'; // Hide nav when cart is active
         } else {
             cartBar.style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'flex';
         }
     }
 
     function openCheckout() {
-        let itemTotal = 0;
-        let itemsHtml = '';
-        
+        let itemTotal = 0; let itemsHtml = '';
         for (let id in cart) {
             itemTotal += (cart[id].qty * cart[id].price);
             itemsHtml += `${cart[id].qty}x ${cart[id].name}<br>`;
         }
-        
-        const gst = Math.round(itemTotal * 0.05);
-        const delivery = 20;
-        const grandTotal = itemTotal + gst + delivery;
-
         document.getElementById('checkoutItems').innerHTML = itemsHtml;
         document.getElementById('billSubtotal').innerText = `₹${itemTotal}`;
-        document.getElementById('billGst').innerText = `₹${gst}`;
-        document.getElementById('billTotal').innerText = `₹${grandTotal}`;
-        document.getElementById('btnTotal').innerText = `₹${grandTotal}`;
-        
-        // Save to hidden form
-        document.getElementById('formRest').value = currentRest;
-        document.getElementById('formDelivery').value = delivery;
-        document.getElementById('formTotal').value = grandTotal;
+        document.getElementById('billGst').innerText = `₹${Math.round(itemTotal * 0.05)}`;
+        document.getElementById('billTotal').innerText = `₹${itemTotal + Math.round(itemTotal * 0.05)}`; // Before delivery
+        document.getElementById('billDelivery').innerText = "Calculate Location";
         
         showScreen('checkoutScreen', 'Checkout', true);
     }
 
-    function selectPayment(method) {
-        currentPayment = method;
-        document.getElementById('payUPI').classList.remove('selected');
-        document.getElementById('payCOD').classList.remove('selected');
-        document.getElementById(`pay${method}`).classList.add('selected');
+    // Haversine GPS Math Formula
+    function getDistance(lat1, lon1, lat2, lon2) {
+        var R = 6371; 
+        var dLat = (lat2-lat1) * (Math.PI/180);
+        var dLon = (lon2-lon1) * (Math.PI/180);
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 
-    // GPS Logic
     function getLocation() {
         const btn = document.getElementById('locBtn');
-        btn.innerText = '📍 Fetching location...';
+        btn.innerText = '📍 Calculating distance...';
         
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 function(position) {
-                    userLocation = position.coords.latitude + ", " + position.coords.longitude;
-                    btn.innerText = '✅ Location Secured';
-                    btn.style.backgroundColor = '#e6f4ea';
-                    btn.style.color = '#137333';
-                    document.getElementById('formGps').value = userLocation;
+                    const cLat = position.coords.latitude;
+                    const cLon = position.coords.longitude;
+                    userLocation = cLat + ", " + cLon;
+                    
+                    distanceKm = getDistance(REST_LAT, REST_LON, cLat, cLon);
+                    
+                    // Smart Delivery Logic
+                    let itemTotal = 0;
+                    for (let id in cart) { itemTotal += (cart[id].qty * cart[id].price); }
+                    
+                    if (itemTotal >= 300) { finalDeliveryFee = 0; }
+                    else if (distanceKm <= 1) { finalDeliveryFee = 0; }
+                    else if (distanceKm <= 3) { finalDeliveryFee = 20; }
+                    else if (distanceKm <= 6) { finalDeliveryFee = 50; }
+                    else if (distanceKm <= 10) { finalDeliveryFee = 70; }
+                    else {
+                        alert("We are sorry! Your location is " + distanceKm.toFixed(1) + "km away. We currently only deliver within 10km. We will expand soon!");
+                        btn.innerText = '❌ Too far for delivery';
+                        return; // Stop here
+                    }
+
+                    // Update UI
+                    document.getElementById('billDelivery').innerText = `₹${finalDeliveryFee} (${distanceKm.toFixed(1)}km)`;
+                    const totalPay = itemTotal + Math.round(itemTotal * 0.05) + finalDeliveryFee;
+                    document.getElementById('billTotal').innerText = `₹${totalPay}`;
+                    
+                    btn.innerText = `✅ Location Set (${distanceKm.toFixed(1)}km away)`;
+                    btn.style.backgroundColor = '#e6f4ea'; btn.style.color = '#137333';
+                    
+                    // Unlock Submit
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.innerText = `Place Order • ₹${totalPay}`;
                 },
                 function(error) {
-                    btn.innerText = '❌ Failed to get location. Try again.';
-                    btn.style.backgroundColor = '#fce8e6';
-                    btn.style.color = '#c5221f';
+                    btn.innerText = '❌ GPS Error. Make sure Location is ON.';
                 }
             );
-        } else {
-            alert("Geolocation is not supported by this browser.");
         }
     }
 
-    // Submit Logic
+    // 5. Submit Order
     function submitOrder() {
         const name = document.getElementById('custName').value;
         const phone = document.getElementById('custPhone').value;
-        
-        if(!name || !phone) {
-            alert('Please enter your name and phone number.');
-            return;
-        }
-        if(!userLocation) {
-            alert('Please tap the location button so we know where to deliver!');
-            return;
-        }
+        if(!name || phone.length < 10) { alert('Please enter name and valid phone number.'); return; }
 
-        // Prepare order details string
-        let orderString = '';
-        for (let id in cart) {
-            orderString += `${cart[id].qty}x ${cart[id].name}, `;
-        }
-        orderString += `(Payment: ${currentPayment})`;
-        
-        // Fill final hidden fields
-        document.getElementById('formName').value = name;
-        document.getElementById('formPhone').value = phone;
-        document.getElementById('formDetails').value = orderString;
-
-        // UI Loading State
-        document.getElementById('submitBtn').style.display = 'none';
-        document.getElementById('loader').style.display = 'block';
-
-        // Send to Google Sheets
-        const form = document.getElementById('googleForm');
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => {
-                showScreen('successScreen', 'Success!', false);
-                document.getElementById('headerTitle').style.display = 'none';
-            })
-            .catch(error => {
-                alert('Error placing order. Please check your internet and try again.');
-                document.getElementById('submitBtn').style.display = 'block';
-                document.getElementById('loader').style.display = 'none';
-            });
-    }
-</script>
-</body>
-</html>
-
+        let itemTotal = 0; let orderString = '';
+    
