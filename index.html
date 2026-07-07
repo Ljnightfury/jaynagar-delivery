@@ -1,97 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaynagar Delivery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>.hidden { display: none !important; } .view-section { padding-bottom: 90px; }</style>
-</head>
-<body class="bg-gray-50 font-sans text-gray-800">
-
-    <header class="bg-orange-500 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
-        <h1 class="text-xl font-bold">Jaynagar Delivery</h1>
-        <button onclick="switchView('cart-view')" class="relative">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-white text-orange-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">0</span>
-        </button>
-    </header>
-
-    <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Connecting to servers...</div>
-
-    <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-lg font-bold mb-4 text-gray-600">Explore Restaurants</h2>
-        <div id="restaurant-list" class="space-y-4"></div>
-    </main>
-
-    <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center">&larr; Back</button>
-        <h2 id="current-restaurant-name" class="text-xl font-extrabold mb-4">Menu</h2>
-        <div id="menu-list" class="space-y-4"></div>
-    </main>
-
-    <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Track Order</h2>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
-            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500">
-            <button onclick="runTrackOrder()" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md">Check Status</button>
-            <div id="track-result" class="mt-4"></div>
-        </div>
-    </main>
-
-    <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Checkout</h2>
-        <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center"></div>
-        <div id="cart-items" class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100 space-y-2"></div>
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 space-y-2 text-sm">
-            <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
-            <div class="flex justify-between"><span>Item Total</span><span id="bill-item-total">₹0</span></div>
-            <div class="flex justify-between"><span>GST (5%)</span><span id="bill-gst">₹0</span></div>
-            <div class="flex justify-between text-orange-600 font-bold cursor-pointer" onclick="calculateDelivery()">
-                <span>Delivery Fee</span><span id="bill-delivery">Calc Loc &rarr;</span>
-            </div>
-            <div class="flex justify-between font-extrabold text-lg border-t pt-2 mt-2"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
-        </div>
-        
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
-            <input type="text" id="cust-name" placeholder="Full Name" class="w-full border p-2 rounded outline-none">
-            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded outline-none">
-            <input type="text" id="cust-address" placeholder="Address" class="w-full border p-2 rounded outline-none">
-            <select id="payment-method" class="w-full border p-2 rounded outline-none">
-                <option value="UPI">Pay via UPI</option>
-                <option value="COD">Cash on Delivery</option>
-            </select>
-            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg disabled:bg-gray-400">Place Order</button>
-        </div>
-    </main>
-
-    <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Support</h2>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-3">
-            <a href="https://wa.me/918851463530" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Lucky</a>
-            <a href="https://wa.me/916206671465" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Mona</a>
-            <a href="mailto:dragonlj6@gmail.com" class="block w-full bg-blue-500 text-white text-center font-bold py-3 rounded-lg shadow">Email Support</a>
-        </div>
-    </main>
-
-    <div id="floating-cart" class="fixed bottom-[65px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
-        <div onclick="switchView('cart-view')" class="bg-green-600 text-white p-3 rounded-xl flex justify-between items-center shadow-lg cursor-pointer">
-            <div class="font-bold text-sm">
-                <span id="float-qty">1</span> Item(s) | <span id="float-total">₹0</span>
-            </div>
-            <div class="font-bold text-sm flex items-center">
-                View Cart &rarr;
-            </div>
-        </div>
-    </div>
-
-    <nav class="fixed bottom-0 w-full bg-white border-t p-2 grid grid-cols-4 gap-1 text-gray-500 font-bold shadow-2xl z-20">
-        <button onclick="switchView('home-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Home</span></button>
-        <button onclick="switchView('track-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Track</span></button>
-        <button onclick="switchView('cart-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Cart</span></button>
-        <button onclick="switchView('support-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Support</span></button>
-    </nav>
-
     <script>
         // --- PUT YOUR NEW WEB APP URL HERE ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec'; 
@@ -103,6 +9,8 @@
         let cart = {};
         let finalTotals = { itemTotal: 0, gst: 0, delivery: null, grandTotal: 0, distance: null };
         let currentRestId = null;
+        let customerLat = null; // NEW: Stores exact GPS
+        let customerLon = null; // NEW: Stores exact GPS
 
         fetch(SCRIPT_URL + "?action=getData").then(res => res.json()).then(data => {
             db = data; 
@@ -115,29 +23,30 @@
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
             
-            // Hide floating cart if we are actually ON the cart page
             if(viewId === 'cart-view') {
                 updateCartView();
                 document.getElementById('floating-cart').classList.add('hidden');
             } else {
-                updateCartCount(); // Re-checks if floating cart should be shown
+                updateCartCount(); 
             }
             
             if(viewId === 'menu-view') renderMenu(currentRestId); 
             window.scrollTo(0,0);
         }
 
-        // --- TRACKING BUG FIX ---
         function runTrackOrder() {
-            let phone = document.getElementById('track-phone').value;
+            let rawPhone = document.getElementById('track-phone').value;
+            let phone = rawPhone.replace(/\D/g, ''); 
             let res = document.getElementById('track-result');
+            
             if(!phone) return alert("Please enter a phone number.");
             res.innerHTML = "<p class='text-center text-orange-500 font-bold'>Fetching...</p>";
             
-            fetch(SCRIPT_URL + "?action=trackOrder&phone=" + phone)
+            let fetchUrl = SCRIPT_URL + "?action=trackOrder&phone=" + phone + "&t=" + new Date().getTime();
+            
+            fetch(fetchUrl)
             .then(r => r.text())
             .then(status => {
-                // Trim added here to fix invisible space bugs
                 status = status.trim();
                 let steps = ["Order in progress", "Shipped", "Out for Delivery", "Delivered"];
                 let idx = steps.indexOf(status);
@@ -202,7 +111,6 @@
             document.getElementById('menu-list').innerHTML = html;
         }
 
-        // --- UPDATED LOGIC FOR NEW FLOATING CART ---
         function updateQty(id, name, price, change) {
             if(!cart[id]) cart[id] = { name: name, price: price, qty: 0 };
             cart[id].qty += change;
@@ -223,7 +131,6 @@
             
             document.getElementById('cart-count').innerText = totalQty;
 
-            // Trigger the floating cart bar
             let floatCart = document.getElementById('floating-cart');
             if(totalQty > 0) {
                 floatCart.classList.remove('hidden');
@@ -289,6 +196,10 @@
             document.getElementById('bill-delivery').innerText = "Getting Loc...";
             
             navigator.geolocation.getCurrentPosition(pos => {
+                // NEW: Saving exact coordinates
+                customerLat = pos.coords.latitude;
+                customerLon = pos.coords.longitude;
+
                 let R = 6371;
                 let dLat = (pos.coords.latitude - BASE_LAT) * Math.PI / 180;
                 let dLon = (pos.coords.longitude - BASE_LON) * Math.PI / 180;
@@ -326,7 +237,9 @@
                 gst_amount: finalTotals.gst, 
                 delivery_fee: finalTotals.delivery, 
                 grand_total: finalTotals.grandTotal, 
-                payment_method: document.getElementById('payment-method').value 
+                payment_method: document.getElementById('payment-method').value,
+                lat: customerLat, // NEW: Sending to database
+                lon: customerLon  // NEW: Sending to database
             };
             
             if(!orderData.customer_name || !orderData.phone || !orderData.delivery_address) return alert("Please fill in all delivery details.");
@@ -352,6 +265,4 @@
             });
         }
     </script>
-</body>
-</html>
-
+    
