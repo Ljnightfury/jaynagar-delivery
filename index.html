@@ -1,52 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaynagar Delivery</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; margin: 0; padding: 15px; }
-        .header { background: #fc8019; color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; }
-        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        button { background: #fc8019; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 5px; }
-        .btn-support { background: #25d366; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-    </style>
+    <title>Jaynagar Delivery Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="header"><h1>Jaynagar Delivery</h1></div>
+<body class="bg-gray-100 pb-20">
 
-    <div id="menu">Loading Menu...</div>
+    <!-- Header -->
+    <header class="bg-orange-500 text-white p-4 shadow-lg sticky top-0 z-10">
+        <h1 class="text-xl font-bold">Jaynagar Delivery</h1>
+    </header>
 
-    <div class="card">
-        <h3>Track Your Order</h3>
-        <input type="text" id="trackPhone" placeholder="Enter phone number">
-        <button onclick="trackOrder()">Check Status</button>
-        <p id="trackResult"></p>
-    </div>
+    <!-- Menu Section -->
+    <main id="menu" class="p-4 space-y-4">
+        <p class="text-gray-500 text-center">Loading premium menu...</p>
+    </main>
 
-    <div class="card">
-        <h3>Customer Care</h3>
-        <a href="https://wa.me/918851463530"><button class="btn-support">Chat with Lucky</button></a>
-        <a href="https://wa.me/916206671465"><button class="btn-support">Chat with Mona Jaiswal</button></a>
-        <a href="mailto:dragonlj6@gmail.com"><button style="background:#db4437;">Email Support</button></a>
-        <a href="https://gemini.google.com"><button style="background:#4285f4;">Ask AI Assistant</button></a>
-    </div>
+    <!-- Bottom Nav Bar -->
+    <nav class="fixed bottom-0 w-full bg-white border-t p-3 flex justify-around text-orange-500 font-bold shadow-2xl">
+        <button onclick="document.getElementById('menu').scrollIntoView()">Home</button>
+        <button onclick="showTrack()">Track</button>
+        <button onclick="showSupport()">Support</button>
+    </nav>
 
-    <
-        const URL = script>Https://script.google.com/macros/s/AKfycbx3sO9lIJjmRif80SNPGq0zYkyRXrqbQ02pkiYFEMtBnPj4vGaqN710W0EREXxwmK5o/exec
-This one ?
-        
+    <script>
+        const URL = 'YOUR_URL_HERE'; // PASTE YOUR SCRIPT URL HERE
+
+        // Load Menu
         fetch(URL + "?action=getMenu").then(r=>r.json()).then(data => {
-            let html = "<h2>Our Menu</h2>";
-            data.forEach(item => html += `<div class='card'><b>${item.name}</b><br>Restaurant: ${item.restaurant}<br>Price: ₹${item.price}</div>`);
+            let html = "<h2 class='text-lg font-bold text-gray-700'>Recommended for You</h2>";
+            data.forEach(item => {
+                html += `<div class='bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center'>
+                            <div><p class='font-bold'>${item.name}</p><p class='text-sm text-gray-500'>${item.restaurant}</p></div>
+                            <p class='font-bold text-orange-600'>₹${item.price}</p>
+                         </div>`;
+            });
             document.getElementById('menu').innerHTML = html;
         });
 
-        function trackOrder() {
-            let phone = document.getElementById('trackPhone').value;
-            fetch(URL + "?action=trackOrder&phone=" + phone)
-            .then(r => r.text())
-            .then(data => document.getElementById('trackResult').innerText = data);
+        function showTrack() {
+            let phone = prompt("Enter your phone number to track order:");
+            if (phone) {
+                fetch(URL + "?action=trackOrder&phone=" + phone)
+                .then(r => r.text())
+                .then(data => alert(data));
+            }
+        }
+
+        function showSupport() {
+            const support = `Support Hub:
+            1. Chat with Lucky: 8851463530
+            2. Chat with Mona Jaiswal: 6206671465
+            3. Email: dragonlj6@gmail.com
+            4. Ask AI: gemini.google.com`;
+            alert(support);
         }
     </script>
 </body>
