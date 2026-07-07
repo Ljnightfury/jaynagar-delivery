@@ -9,7 +9,6 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <!-- Header -->
     <header class="bg-orange-500 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
         <h1 class="text-xl font-bold">Jaynagar Delivery</h1>
         <button onclick="switchView('cart-view')" class="relative">
@@ -20,20 +19,17 @@
 
     <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Connecting to servers...</div>
 
-    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-lg font-bold mb-4 text-gray-600">Explore Restaurants</h2>
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
-    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
         <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center">&larr; Back</button>
         <h2 id="current-restaurant-name" class="text-xl font-extrabold mb-4">Menu</h2>
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
-    <!-- Track View -->
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Track Order</h2>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
@@ -43,7 +39,6 @@
         </div>
     </main>
 
-    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Checkout</h2>
         <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center"></div>
@@ -70,7 +65,6 @@
         </div>
     </main>
 
-    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Support</h2>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-3">
@@ -80,7 +74,6 @@
         </div>
     </main>
 
-    <!-- FLOATING CART SUMMARY -->
     <div id="floating-cart" class="fixed bottom-[65px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
         <div onclick="switchView('cart-view')" class="bg-green-600 text-white p-3 rounded-xl flex justify-between items-center shadow-lg cursor-pointer">
             <div class="font-bold text-sm">
@@ -92,7 +85,6 @@
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 w-full bg-white border-t p-2 grid grid-cols-4 gap-1 text-gray-500 font-bold shadow-2xl z-20">
         <button onclick="switchView('home-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Home</span></button>
         <button onclick="switchView('track-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Track</span></button>
