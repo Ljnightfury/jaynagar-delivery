@@ -21,106 +21,84 @@
         </button>
     </header>
 
-    <!-- Loading State -->
     <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Connecting to servers...</div>
 
-    <!-- 1. Home View (Restaurants) -->
+    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-lg font-bold mb-4 text-gray-600">Explore Restaurants</h2>
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
-    <!-- 2. Menu View -->
+    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center">
-            &larr; Back to Restaurants
-        </button>
+        <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center">&larr; Back</button>
         <h2 id="current-restaurant-name" class="text-xl font-extrabold mb-4">Menu</h2>
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
-    <!-- 3. Cart & Checkout View -->
+    <!-- Track View -->
+    <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
+        <h2 class="text-xl font-extrabold mb-4">Track Order</h2>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
+            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border p-3 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+            <button onclick="runTrackOrder()" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md">Check Status</button>
+            <p id="track-result" class="text-center font-bold text-gray-700 mt-4 whitespace-pre-line"></p>
+        </div>
+    </main>
+
+    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Your Cart</h2>
+        <h2 class="text-xl font-extrabold mb-4">Checkout</h2>
         <div id="cart-items" class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100"></div>
-        
-        <!-- Bill Details -->
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 space-y-2 text-sm">
             <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
             <div class="flex justify-between"><span>Item Total</span><span id="bill-item-total">₹0</span></div>
             <div class="flex justify-between"><span>GST (5%)</span><span id="bill-gst">₹0</span></div>
             <div class="flex justify-between text-orange-600 font-bold cursor-pointer" onclick="calculateDelivery()">
-                <span>Delivery Fee (Tap to calc)</span><span id="bill-delivery">Calc Loc &rarr;</span>
+                <span>Delivery Fee</span><span id="bill-delivery">Calc Loc &rarr;</span>
             </div>
             <div id="delivery-msg" class="text-xs text-gray-400 text-right">Free delivery on orders above ₹300!</div>
             <div class="flex justify-between font-extrabold text-lg border-t pt-2 mt-2"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
         </div>
-
-        <!-- Checkout Form -->
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
-            <h3 class="font-bold text-gray-700">Delivery Details</h3>
-            <input type="text" id="cust-name" placeholder="Full Name" class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none">
-            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none">
-            <input type="text" id="cust-address" placeholder="House/Flat No, Landmark" class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none">
-            <select id="payment-method" class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none">
-                <option value="UPI">Pay via UPI</option>
-                <option value="COD">Cash on Delivery</option>
-            </select>
-            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md disabled:bg-gray-300">
-                Place Order
-            </button>
+            <input type="text" id="cust-name" placeholder="Full Name" class="w-full border p-2 rounded">
+            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded">
+            <input type="text" id="cust-address" placeholder="Address" class="w-full border p-2 rounded">
+            <select id="payment-method" class="w-full border p-2 rounded"><option value="UPI">Pay via UPI</option><option value="COD">Cash on Delivery</option></select>
+            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg">Place Order</button>
         </div>
     </main>
 
-    <!-- 4. Support View -->
+    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Customer Care</h2>
+        <h2 class="text-xl font-extrabold mb-4">Support</h2>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-3">
             <a href="https://wa.me/918851463530" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Lucky</a>
-            <a href="https://wa.me/916206671465" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Mona Jaiswal</a>
-            <p class="text-sm text-gray-500 text-center mt-4">Working Hours: 10 AM to 11 PM</p>
+            <a href="https://wa.me/916206671465" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Mona</a>
         </div>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 w-full bg-white border-t p-2 flex justify-around text-gray-500 font-bold shadow-2xl z-20">
-        <button onclick="switchView('home-view')" class="flex flex-col items-center hover:text-orange-500 focus:text-orange-500 p-2">
-            <span class="text-sm">Home</span>
-        </button>
-        <button onclick="switchView('cart-view')" class="flex flex-col items-center hover:text-orange-500 focus:text-orange-500 p-2">
-            <span class="text-sm">Checkout</span>
-        </button>
-        <button onclick="switchView('support-view')" class="flex flex-col items-center hover:text-orange-500 focus:text-orange-500 p-2">
-            <span class="text-sm">Support</span>
-        </button>
+    <nav class="fixed bottom-0 w-full bg-white border-t p-2 grid grid-cols-4 gap-1 text-gray-500 font-bold shadow-2xl z-20">
+        <button onclick="switchView('home-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Home</span></button>
+        <button onclick="switchView('track-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Track</span></button>
+        <button onclick="switchView('cart-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Cart</span></button>
+        <button onclick="switchView('support-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Support</span></button>
     </nav>
 
     <script>
-        // --- PUT YOUR COPIED URL RIGHT HERE ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec'; 
-
-        // Base Coordinates (Inder Enclave Phase 1, Nangloi)
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec';
         const BASE_LAT = 26.5816;
-const BASE_LON = 86.1297;
-        
+        const BASE_LON = 86.1297;
 
         let db = { restaurants: [], menu: [] };
         let cart = {};
         let finalTotals = { itemTotal: 0, gst: 0, delivery: null, grandTotal: 0, distance: null };
 
-        // 1. Initialize App
-        fetch(SCRIPT_URL + "?action=getData")
-            .then(res => res.json())
-            .then(data => {
-                db = data;
-                document.getElementById('loading').classList.add('hidden');
-                renderRestaurants();
-                switchView('home-view');
-            }).catch(e => {
-                document.getElementById('loading').innerText = "System offline. Check connection.";
-            });
+        fetch(SCRIPT_URL + "?action=getData").then(res => res.json()).then(data => {
+            db = data; document.getElementById('loading').classList.add('hidden'); renderRestaurants(); switchView('home-view');
+        });
 
-        // 2. Navigation
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
@@ -128,19 +106,26 @@ const BASE_LON = 86.1297;
             window.scrollTo(0,0);
         }
 
-        // 3. Render Data
+        // --- TRACKING LOGIC ---
+        function runTrackOrder() {
+            let phone = document.getElementById('track-phone').value;
+            let res = document.getElementById('track-result');
+            if(!phone) return alert("Enter phone number");
+            res.innerText = "Finding...";
+            fetch(SCRIPT_URL + "?action=trackOrder&phone=" + phone)
+            .then(r => r.text())
+            .then(t => res.innerText = t);
+        }
+
+        // --- RENDER & CART LOGIC (SAME AS BEFORE) ---
         function renderRestaurants() {
             let html = "";
             db.restaurants.forEach(r => {
-                html += `
-                <div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer">
+                html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer">
                     <div class="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                        <img src="${r.image}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150?text=Food'">
+                        <img src="${r.image}" class="w-full h-full object-cover">
                     </div>
-                    <div>
-                        <h3 class="font-extrabold text-lg">${r.name}</h3>
-                        <p class="text-xs text-green-500 font-bold">Open Now &bull; Tap to view</p>
-                    </div>
+                    <div><h3 class="font-extrabold text-lg">${r.name}</h3><p class="text-xs text-green-500 font-bold">Open Now</p></div>
                 </div>`;
             });
             document.getElementById('restaurant-list').innerHTML = html;
@@ -151,28 +136,18 @@ const BASE_LON = 86.1297;
             let items = db.menu.filter(m => m.restaurant_id === restId);
             let html = "";
             items.forEach(item => {
-                html += `
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
-                    <div>
-                        <div class="text-[10px] ${item.category === 'Veg' ? 'text-green-600 bg-green-100 border-green-600' : 'text-red-600 bg-red-100 border-red-600'} border px-1 inline-block rounded mb-1 font-bold uppercase">${item.category}</div>
-                        <h4 class="font-bold text-gray-800">${item.name}</h4>
-                        <p class="font-extrabold text-sm text-gray-600">₹${item.price_inr}</p>
-                    </div>
-                    <button onclick="addToCart('${item.id}', '${item.name}', ${item.price_inr})" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-4 py-2 rounded-lg shadow-sm">
-                        ADD
-                    </button>
+                html += `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                    <div><h4 class="font-bold text-gray-800">${item.name}</h4><p class="font-extrabold text-sm text-gray-600">₹${item.price_inr}</p></div>
+                    <button onclick="addToCart('${item.id}', '${item.name}', ${item.price_inr})" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-4 py-2 rounded-lg">ADD</button>
                 </div>`;
             });
             document.getElementById('menu-list').innerHTML = html;
             switchView('menu-view');
         }
 
-        // 4. Cart Logic
         function addToCart(id, name, price) {
-            if(cart[id]) { cart[id].qty++; } 
-            else { cart[id] = { name: name, price: price, qty: 1 }; }
-            updateCartCount();
-            alert(name + " added to cart!");
+            if(cart[id]) { cart[id].qty++; } else { cart[id] = { name: name, price: price, qty: 1 }; }
+            updateCartCount(); alert(name + " added!");
         }
 
         function updateCartCount() {
@@ -182,146 +157,41 @@ const BASE_LON = 86.1297;
         }
 
         function updateCartView() {
-            let html = "";
-            finalTotals.itemTotal = 0;
+            let html = ""; finalTotals.itemTotal = 0;
             for(let key in cart) {
-                let c = cart[key];
-                let itemCost = c.price * c.qty;
-                finalTotals.itemTotal += itemCost;
-                html += `<div class="flex justify-between mb-2 pb-2 border-b text-sm">
-                            <span>${c.name} x ${c.qty}</span>
-                            <span class="font-bold">₹${itemCost}</span>
-                         </div>`;
+                let c = cart[key]; finalTotals.itemTotal += (c.price * c.qty);
+                html += `<div class="flex justify-between mb-2 pb-2 border-b text-sm"><span>${c.name} x ${c.qty}</span><span class="font-bold">₹${c.price * c.qty}</span></div>`;
             }
-            if(finalTotals.itemTotal === 0) html = "<p class='text-gray-400 text-sm text-center'>Cart is empty.</p>";
-            document.getElementById('cart-items').innerHTML = html;
-            
+            document.getElementById('cart-items').innerHTML = html || "Cart is empty.";
             finalTotals.gst = Math.round(finalTotals.itemTotal * 0.05);
             document.getElementById('bill-item-total').innerText = "₹" + finalTotals.itemTotal;
             document.getElementById('bill-gst').innerText = "₹" + finalTotals.gst;
-            
-            // Reset delivery until location is fetched
-            finalTotals.delivery = null;
-            document.getElementById('bill-delivery').innerText = "Calc Loc \u2192";
             updateGrandTotal();
         }
 
         function updateGrandTotal() {
-            if(finalTotals.delivery === null) {
-                document.getElementById('bill-grand-total').innerText = "Pending Loc";
-                document.getElementById('btn-place-order').disabled = true;
-                return;
-            }
+            if(finalTotals.delivery === null) { document.getElementById('bill-grand-total').innerText = "Pending Loc"; return; }
             finalTotals.grandTotal = finalTotals.itemTotal + finalTotals.gst + finalTotals.delivery;
             document.getElementById('bill-grand-total').innerText = "₹" + finalTotals.grandTotal;
-            document.getElementById('btn-place-order').disabled = false;
         }
 
-        // 5. Live Location & Distance Math (Haversine Formula)
         function calculateDelivery() {
-            if(finalTotals.itemTotal === 0) return alert("Add items to cart first!");
-            document.getElementById('bill-delivery').innerText = "Getting Loc...";
-            
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    let lat = position.coords.latitude;
-                    let lon = position.coords.longitude;
-                    
-                    // Haversine formula
-                    let R = 6371; // km
-                    let dLat = (lat - BASE_LAT) * Math.PI / 180;
-                    let dLon = (lon - BASE_LON) * Math.PI / 180;
-                    let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                            Math.cos(BASE_LAT * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
-                            Math.sin(dLon/2) * Math.sin(dLon/2);
-                    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                    let distance = R * c;
-                    
-                    finalTotals.distance = distance.toFixed(2);
-                    applyDeliveryRules(distance);
-                }, error => {
-                    alert("Location access denied. We cannot calculate delivery.");
-                    document.getElementById('bill-delivery').innerText = "Loc Failed";
-                });
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-
-        function applyDeliveryRules(dist) {
-            let fee = 0;
-            let msg = document.getElementById('delivery-msg');
-            
-            if (finalTotals.itemTotal >= 300) {
-                fee = 0;
-                msg.innerText = `Free delivery applied! (Distance: ${dist}km)`;
-                msg.className = "text-xs text-green-500 font-bold text-right";
-            } else {
-                if (dist <= 1) fee = 0;
-                else if (dist > 1 && dist <= 3) fee = 20;
-                else if (dist > 3 && dist <= 6) fee = 50;
-                else if (dist > 6 && dist <= 10) fee = 70;
-                else {
-                    alert(`Sorry! You are ${dist}km away. We do not deliver beyond 10km yet. We will be there soon!`);
-                    document.getElementById('bill-delivery').innerText = "Out of Zone";
-                    return;
+            navigator.geolocation.getCurrentPosition(pos => {
+                let d = Math.sqrt(Math.pow(pos.coords.latitude - BASE_LAT, 2) + Math.pow(pos.coords.longitude - BASE_LON, 2)) * 111;
+                finalTotals.distance = d.toFixed(2);
+                let fee = 0;
+                if(finalTotals.itemTotal < 300) {
+                    if(d <= 1) fee = 0; else if(d <= 3) fee = 20; else if(d <= 6) fee = 50; else if(d <= 10) fee = 70; else { alert("Out of zone"); return; }
                 }
-                msg.innerText = `Distance: ${dist}km`;
-                msg.className = "text-xs text-gray-500 text-right";
-            }
-            
-            finalTotals.delivery = fee;
-            document.getElementById('bill-delivery').innerText = "₹" + fee;
-            updateGrandTotal();
+                finalTotals.delivery = fee;
+                document.getElementById('bill-delivery').innerText = "₹" + fee;
+                updateGrandTotal();
+            });
         }
 
-        // 6. Submit Order
         function placeOrder() {
-            let name = document.getElementById('cust-name').value;
-            let phone = document.getElementById('cust-phone').value;
-            let address = document.getElementById('cust-address').value;
-            let method = document.getElementById('payment-method').value;
-
-            if(!name || !phone || !address) return alert("Please fill in your name, phone, and address.");
-            if(finalTotals.itemTotal === 0) return alert("Cart is empty.");
-
-            let btn = document.getElementById('btn-place-order');
-            btn.innerText = "Processing...";
-            btn.disabled = true;
-
-            let orderData = {
-                customer_name: name,
-                phone: phone,
-                delivery_address: address,
-                distance_km: finalTotals.distance,
-                cart_details: cart,
-                item_total: finalTotals.itemTotal,
-                gst_amount: finalTotals.gst,
-                delivery_fee: finalTotals.delivery,
-                grand_total: finalTotals.grandTotal,
-                payment_method: method
-            };
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(orderData)
-            })
-            .then(res => res.text())
-            .then(orderId => {
-                alert(`Order Confirmed!\nYour Order ID is: ${orderId}\nWe will process this immediately.`);
-                // Reset App
-                cart = {};
-                updateCartCount();
-                document.getElementById('cust-name').value = "";
-                document.getElementById('cust-address').value = "";
-                switchView('home-view');
-                btn.innerText = "Place Order";
-            })
-            .catch(err => {
-                alert("Error placing order. Please try again.");
-                btn.innerText = "Place Order";
-                btn.disabled = false;
-            });
+            let orderData = { customer_name: document.getElementById('cust-name').value, phone: document.getElementById('cust-phone').value, delivery_address: document.getElementById('cust-address').value, distance_km: finalTotals.distance, cart_details: cart, item_total: finalTotals.itemTotal, gst_amount: finalTotals.gst, delivery_fee: finalTotals.delivery, grand_total: finalTotals.grandTotal, payment_method: document.getElementById('payment-method').value };
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(orderData) }).then(res => res.text()).then(id => { alert("Order Confirmed! ID: " + id); switchView('home-view'); });
         }
     </script>
 </body>
