@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jaynagar Delivery</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .hidden { display: none !important; }
-        .view-section { padding-bottom: 80px; }
-    </style>
+    <style>.hidden { display: none !important; } .view-section { padding-bottom: 80px; }</style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
     <!-- Header -->
     <header class="bg-orange-500 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
-        <h1 class="text-xl font-bold" id="header-title">Jaynagar Delivery</h1>
+        <h1 class="text-xl font-bold">Jaynagar Delivery</h1>
         <button onclick="switchView('cart-view')" class="relative">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
             <span id="cart-count" class="absolute -top-2 -right-2 bg-white text-orange-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">0</span>
@@ -40,16 +37,21 @@
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Track Order</h2>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
-            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border p-3 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
+            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500">
             <button onclick="runTrackOrder()" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md">Check Status</button>
-            <p id="track-result" class="text-center font-bold text-gray-700 mt-4 whitespace-pre-line"></p>
+            <div id="track-result" class="mt-4"></div>
         </div>
     </main>
 
     <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Checkout</h2>
-        <div id="cart-items" class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100"></div>
+        
+        <!-- Free Delivery Banner -->
+        <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center"></div>
+
+        <div id="cart-items" class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100 space-y-2"></div>
+        
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 space-y-2 text-sm">
             <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
             <div class="flex justify-between"><span>Item Total</span><span id="bill-item-total">₹0</span></div>
@@ -57,15 +59,18 @@
             <div class="flex justify-between text-orange-600 font-bold cursor-pointer" onclick="calculateDelivery()">
                 <span>Delivery Fee</span><span id="bill-delivery">Calc Loc &rarr;</span>
             </div>
-            <div id="delivery-msg" class="text-xs text-gray-400 text-right">Free delivery on orders above ₹300!</div>
             <div class="flex justify-between font-extrabold text-lg border-t pt-2 mt-2"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
         </div>
+        
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
-            <input type="text" id="cust-name" placeholder="Full Name" class="w-full border p-2 rounded">
-            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded">
-            <input type="text" id="cust-address" placeholder="Address" class="w-full border p-2 rounded">
-            <select id="payment-method" class="w-full border p-2 rounded"><option value="UPI">Pay via UPI</option><option value="COD">Cash on Delivery</option></select>
-            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg">Place Order</button>
+            <input type="text" id="cust-name" placeholder="Full Name" class="w-full border p-2 rounded outline-none">
+            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded outline-none">
+            <input type="text" id="cust-address" placeholder="Address" class="w-full border p-2 rounded outline-none">
+            <select id="payment-method" class="w-full border p-2 rounded outline-none">
+                <option value="UPI">Pay via UPI</option>
+                <option value="COD">Cash on Delivery</option>
+            </select>
+            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg disabled:bg-gray-400">Place Order</button>
         </div>
     </main>
 
@@ -75,6 +80,7 @@
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-3">
             <a href="https://wa.me/918851463530" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Lucky</a>
             <a href="https://wa.me/916206671465" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Mona</a>
+            <a href="mailto:dragonlj6@gmail.com" class="block w-full bg-blue-500 text-white text-center font-bold py-3 rounded-lg shadow">Email Support</a>
         </div>
     </main>
 
@@ -87,22 +93,30 @@
     </nav>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec';
+        // --- PUT YOUR NEW WEB APP URL HERE ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec'; 
+        
+        // Jainagar Coordinates
         const BASE_LAT = 26.5816;
         const BASE_LON = 86.1297;
 
         let db = { restaurants: [], menu: [] };
         let cart = {};
         let finalTotals = { itemTotal: 0, gst: 0, delivery: null, grandTotal: 0, distance: null };
+        let currentRestId = null;
 
         fetch(SCRIPT_URL + "?action=getData").then(res => res.json()).then(data => {
-            db = data; document.getElementById('loading').classList.add('hidden'); renderRestaurants(); switchView('home-view');
+            db = data; 
+            document.getElementById('loading').classList.add('hidden'); 
+            renderRestaurants(); 
+            switchView('home-view');
         });
 
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
             if(viewId === 'cart-view') updateCartView();
+            if(viewId === 'menu-view') renderMenu(currentRestId); // Refresh menu to show updated quantities
             window.scrollTo(0,0);
         }
 
@@ -110,21 +124,39 @@
         function runTrackOrder() {
             let phone = document.getElementById('track-phone').value;
             let res = document.getElementById('track-result');
-            if(!phone) return alert("Enter phone number");
-            res.innerText = "Finding...";
+            if(!phone) return alert("Please enter a phone number.");
+            res.innerHTML = "<p class='text-center text-orange-500 font-bold'>Fetching...</p>";
+            
             fetch(SCRIPT_URL + "?action=trackOrder&phone=" + phone)
             .then(r => r.text())
-            .then(t => res.innerText = t);
+            .then(status => {
+                let steps = ["Order in progress", "Shipped", "Out for Delivery", "Delivered"];
+                let idx = steps.indexOf(status);
+                
+                if(idx === -1) { 
+                    res.innerHTML = "<p class='text-center font-bold text-red-500'>Order not found.</p>"; 
+                    return; 
+                }
+                
+                let html = `<div class="flex justify-between items-center mt-4 relative">
+                                <div class="absolute w-full h-1 bg-gray-200 top-2 z-[-1]"></div>`;
+                steps.forEach((s, i) => {
+                    let color = i <= idx ? "bg-green-500" : "bg-gray-300";
+                    html += `<div class="flex flex-col items-center bg-white px-1">
+                                <div class="w-5 h-5 rounded-full ${color} text-white flex items-center justify-center text-[10px]">✔</div>
+                                <span class="text-[9px] mt-1 text-center w-14 font-bold text-gray-600">${s}</span>
+                             </div>`;
+                });
+                res.innerHTML = html + `</div><p class="mt-6 text-center font-extrabold text-orange-600 text-lg">Status: ${status}</p>`;
+            });
         }
 
-        // --- RENDER & CART LOGIC (SAME AS BEFORE) ---
+        // --- RESTAURANT & MENU RENDER ---
         function renderRestaurants() {
             let html = "";
             db.restaurants.forEach(r => {
-                html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer">
-                    <div class="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                        <img src="${r.image}" class="w-full h-full object-cover">
-                    </div>
+                html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer mb-4">
+                    <div class="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0"><img src="${r.image}" class="w-full h-full object-cover"></div>
                     <div><h3 class="font-extrabold text-lg">${r.name}</h3><p class="text-xs text-green-500 font-bold">Open Now</p></div>
                 </div>`;
             });
@@ -133,21 +165,46 @@
 
         function openMenu(restId, restName) {
             document.getElementById('current-restaurant-name').innerText = restName;
-            let items = db.menu.filter(m => m.restaurant_id === restId);
-            let html = "";
-            items.forEach(item => {
-                html += `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
-                    <div><h4 class="font-bold text-gray-800">${item.name}</h4><p class="font-extrabold text-sm text-gray-600">₹${item.price_inr}</p></div>
-                    <button onclick="addToCart('${item.id}', '${item.name}', ${item.price_inr})" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-4 py-2 rounded-lg">ADD</button>
-                </div>`;
-            });
-            document.getElementById('menu-list').innerHTML = html;
+            currentRestId = restId;
+            renderMenu(restId);
             switchView('menu-view');
         }
 
-        function addToCart(id, name, price) {
-            if(cart[id]) { cart[id].qty++; } else { cart[id] = { name: name, price: price, qty: 1 }; }
-            updateCartCount(); alert(name + " added!");
+        function renderMenu(restId) {
+            let items = db.menu.filter(m => m.restaurant_id === restId);
+            let html = "";
+            items.forEach(item => {
+                let qty = cart[item.id] ? cart[item.id].qty : 0;
+                
+                // Switch between "ADD" button and "- 1 +" quantity controls
+                let btnHtml = qty === 0 
+                    ? `<button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-6 py-1.5 rounded-lg shadow-sm">ADD</button>`
+                    : `<div class="flex items-center bg-orange-100 text-orange-600 font-bold rounded-lg border border-orange-200">
+                           <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, -1)" class="px-3 py-1.5 text-lg leading-none">-</button>
+                           <span class="px-2 text-sm">${qty}</span>
+                           <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="px-3 py-1.5 text-lg leading-none">+</button>
+                       </div>`;
+
+                html += `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center mb-3">
+                    <div>
+                        <h4 class="font-bold text-gray-800">${item.name}</h4>
+                        <p class="font-extrabold text-sm text-gray-600">₹${item.price_inr}</p>
+                    </div>
+                    <div>${btnHtml}</div>
+                </div>`;
+            });
+            document.getElementById('menu-list').innerHTML = html;
+        }
+
+        // --- CART LOGIC ---
+        function updateQty(id, name, price, change) {
+            if(!cart[id]) cart[id] = { name: name, price: price, qty: 0 };
+            
+            cart[id].qty += change;
+            if (cart[id].qty <= 0) delete cart[id];
+            
+            updateCartCount();
+            renderMenu(currentRestId); // Instantly update the UI buttons
         }
 
         function updateCartCount() {
@@ -157,42 +214,127 @@
         }
 
         function updateCartView() {
-            let html = ""; finalTotals.itemTotal = 0;
+            let html = ""; 
+            finalTotals.itemTotal = 0;
+            
             for(let key in cart) {
-                let c = cart[key]; finalTotals.itemTotal += (c.price * c.qty);
-                html += `<div class="flex justify-between mb-2 pb-2 border-b text-sm"><span>${c.name} x ${c.qty}</span><span class="font-bold">₹${c.price * c.qty}</span></div>`;
+                let c = cart[key]; 
+                let lineTotal = c.price * c.qty;
+                finalTotals.itemTotal += lineTotal;
+                html += `<div class="flex justify-between text-sm">
+                            <span>${c.name} <span class="text-xs text-gray-400">x${c.qty}</span></span>
+                            <span class="font-bold">₹${lineTotal}</span>
+                         </div>`;
             }
-            document.getElementById('cart-items').innerHTML = html || "Cart is empty.";
+            
+            document.getElementById('cart-items').innerHTML = html || "<p class='text-center text-gray-400'>Cart is empty.</p>";
+            
+            // Subtotal & GST
             finalTotals.gst = Math.round(finalTotals.itemTotal * 0.05);
             document.getElementById('bill-item-total').innerText = "₹" + finalTotals.itemTotal;
             document.getElementById('bill-gst').innerText = "₹" + finalTotals.gst;
+            
+            // Free Delivery Logic
+            let banner = document.getElementById('free-delivery-banner');
+            if (finalTotals.itemTotal === 0) {
+                banner.innerText = "Add items to unlock Free Delivery!";
+                banner.className = "bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-bold mb-4 text-center";
+            } else if (finalTotals.itemTotal < 300) {
+                let diff = 300 - finalTotals.itemTotal;
+                banner.innerText = `Add ₹${diff} more for Free Delivery!`;
+                banner.className = "bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center";
+            } else {
+                banner.innerText = "🎉 You've unlocked Free Delivery!";
+                banner.className = "bg-green-50 text-green-700 border border-green-200 p-3 rounded-lg text-sm font-bold mb-4 text-center";
+            }
+
+            // Reset delivery fee until calculated
+            finalTotals.delivery = null;
+            document.getElementById('bill-delivery').innerText = "Calc Loc \u2192";
             updateGrandTotal();
         }
 
         function updateGrandTotal() {
-            if(finalTotals.delivery === null) { document.getElementById('bill-grand-total').innerText = "Pending Loc"; return; }
+            let btn = document.getElementById('btn-place-order');
+            if(finalTotals.delivery === null) { 
+                document.getElementById('bill-grand-total').innerText = "Pending Loc"; 
+                btn.disabled = true;
+                return; 
+            }
             finalTotals.grandTotal = finalTotals.itemTotal + finalTotals.gst + finalTotals.delivery;
             document.getElementById('bill-grand-total').innerText = "₹" + finalTotals.grandTotal;
+            btn.disabled = false;
         }
 
+        // --- DELIVERY MATH ---
         function calculateDelivery() {
+            if(finalTotals.itemTotal === 0) return alert("Add items to cart first!");
+            document.getElementById('bill-delivery').innerText = "Getting Loc...";
+            
             navigator.geolocation.getCurrentPosition(pos => {
-                let d = Math.sqrt(Math.pow(pos.coords.latitude - BASE_LAT, 2) + Math.pow(pos.coords.longitude - BASE_LON, 2)) * 111;
-                finalTotals.distance = d.toFixed(2);
+                let R = 6371;
+                let dLat = (pos.coords.latitude - BASE_LAT) * Math.PI / 180;
+                let dLon = (pos.coords.longitude - BASE_LON) * Math.PI / 180;
+                let a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(BASE_LAT * Math.PI / 180) * Math.cos(pos.coords.latitude * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                let distance = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                
+                finalTotals.distance = distance.toFixed(2);
                 let fee = 0;
+                
                 if(finalTotals.itemTotal < 300) {
-                    if(d <= 1) fee = 0; else if(d <= 3) fee = 20; else if(d <= 6) fee = 50; else if(d <= 10) fee = 70; else { alert("Out of zone"); return; }
+                    if(distance <= 1) fee = 0; 
+                    else if(distance <= 3) fee = 20; 
+                    else if(distance <= 6) fee = 50; 
+                    else if(distance <= 10) fee = 70; 
+                    else { alert(`You are ${finalTotals.distance}km away. We do not deliver beyond 10km.`); document.getElementById('bill-delivery').innerText = "Out of Zone"; return; }
                 }
+                
                 finalTotals.delivery = fee;
                 document.getElementById('bill-delivery').innerText = "₹" + fee;
                 updateGrandTotal();
+            }, err => {
+                alert("Location access needed for delivery calculation.");
+                document.getElementById('bill-delivery').innerText = "Loc Failed";
             });
         }
 
         function placeOrder() {
-            let orderData = { customer_name: document.getElementById('cust-name').value, phone: document.getElementById('cust-phone').value, delivery_address: document.getElementById('cust-address').value, distance_km: finalTotals.distance, cart_details: cart, item_total: finalTotals.itemTotal, gst_amount: finalTotals.gst, delivery_fee: finalTotals.delivery, grand_total: finalTotals.grandTotal, payment_method: document.getElementById('payment-method').value };
-            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(orderData) }).then(res => res.text()).then(id => { alert("Order Confirmed! ID: " + id); switchView('home-view'); });
+            let orderData = { 
+                customer_name: document.getElementById('cust-name').value, 
+                phone: document.getElementById('cust-phone').value, 
+                delivery_address: document.getElementById('cust-address').value, 
+                distance_km: finalTotals.distance, 
+                cart_details: cart, 
+                item_total: finalTotals.itemTotal, 
+                gst_amount: finalTotals.gst, 
+                delivery_fee: finalTotals.delivery, 
+                grand_total: finalTotals.grandTotal, 
+                payment_method: document.getElementById('payment-method').value 
+            };
+            
+            if(!orderData.customer_name || !orderData.phone || !orderData.delivery_address) return alert("Please fill in all delivery details.");
+
+            let btn = document.getElementById('btn-place-order');
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(orderData) })
+            .then(res => res.text())
+            .then(id => { 
+                alert("Order Confirmed! Your Order ID is: " + id);
+                cart = {};
+                updateCartCount();
+                document.getElementById('cust-name').value = "";
+                document.getElementById('cust-address').value = "";
+                switchView('home-view');
+                btn.innerText = "Place Order";
+            }).catch(err => {
+                alert("Error placing order.");
+                btn.innerText = "Place Order";
+                btn.disabled = false;
+            });
         }
     </script>
 </body>
-</html>
+    </html>
+    
