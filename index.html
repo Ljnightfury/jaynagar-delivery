@@ -1,38 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jaynagar Delivery</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1 { color: #fc8019; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; margin: 0; padding: 15px; }
+        .header { background: #fc8019; color: white; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; }
+        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { background: #fc8019; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 5px; }
+        .btn-support { background: #25d366; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
     </style>
 </head>
 <body>
-    <h1>Jaynagar Delivery</h1>
+    <div class="header"><h1>Jaynagar Delivery</h1></div>
+
     <div id="menu">Loading Menu...</div>
 
-    <script>
-        const URL = 'https://script.google.com/macros/s/AKfycbx3sO9llJjmRif80SNPGq0zYkyRXrqb002pkYFEMtBnFj4vGaqN710W0EREXxwmK5o/exec';
+    <div class="card">
+        <h3>Track Your Order</h3>
+        <input type="text" id="trackPhone" placeholder="Enter phone number">
+        <button onclick="trackOrder()">Check Status</button>
+        <p id="trackResult"></p>
+    </div>
+
+    <div class="card">
+        <h3>Customer Care</h3>
+        <a href="https://wa.me/918851463530"><button class="btn-support">Chat with Lucky</button></a>
+        <a href="https://wa.me/916206671465"><button class="btn-support">Chat with Mona Jaiswal</button></a>
+        <a href="mailto:dragonlj6@gmail.com"><button style="background:#db4437;">Email Support</button></a>
+        <a href="https://gemini.google.com"><button style="background:#4285f4;">Ask AI Assistant</button></a>
+    </div>
+
+    <
+        const URL = script>Https://script.google.com/macros/s/AKfycbx3sO9lIJjmRif80SNPGq0zYkyRXrqbQ02pkiYFEMtBnPj4vGaqN710W0EREXxwmK5o/exec
+This one ?
         
-        fetch(URL + "?action=getMenu")
-            .then(r => r.json())
-            .then(data => {
-                let html = "";
-                data.forEach(item => {
-                    html += `<div class="card">
-                        <strong>${item.name}</strong><br>
-                        Restaurant: ${item.restaurant}<br>
-                        Price: ₹${item.price}
-                    </div>`;
-                });
-                document.getElementById('menu').innerHTML = html;
-            })
-            .catch(e => {
-                document.getElementById('menu').innerHTML = "Error loading. Check Google Sheet tab names.";
-            });
+        fetch(URL + "?action=getMenu").then(r=>r.json()).then(data => {
+            let html = "<h2>Our Menu</h2>";
+            data.forEach(item => html += `<div class='card'><b>${item.name}</b><br>Restaurant: ${item.restaurant}<br>Price: ₹${item.price}</div>`);
+            document.getElementById('menu').innerHTML = html;
+        });
+
+        function trackOrder() {
+            let phone = document.getElementById('trackPhone').value;
+            fetch(URL + "?action=trackOrder&phone=" + phone)
+            .then(r => r.text())
+            .then(data => document.getElementById('trackResult').innerText = data);
+        }
     </script>
 </body>
 </html>
