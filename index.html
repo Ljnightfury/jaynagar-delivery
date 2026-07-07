@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jaynagar Delivery</title>
-<style>
-body { font-family: sans-serif; text-align: center; padding: 20px; }
-#loader { color: #fc8019; font-weight: bold; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaynagar Delivery</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #fc8019; }
+    </style>
 </head>
 <body>
-    <div id="loader">Loading Menu...</div>
-    <div id="content" style="display:none;">
-        <h1>Jaynagar Delivery</h1>
-        <p>System Connected Successfully.</p>
-    </div>
-<script>
-const URL = 'https://script.google.com/macros/s/AKfycbxLpEKD2Sw_G-k9Oi6tiArMcfzeC7gdAXtpvESrzEpv6e7QPi5lJ9vXkKFY4KKzFLL/exec';
-window.onload = () => {
-    fetch(URL + "?action=getMenu&t=" + Date.now())
-    .then(r => r.json())
-    .then(d => {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-        console.log("Menu loaded:", d);
-    })
-    .catch(e => {
-        document.getElementById('loader').innerText = "Network Error. Check Google Sheet 'Menu' tab.";
-    });
-};
-</script>
+    <h1>Jaynagar Delivery</h1>
+    <div id="menu">Loading Menu...</div>
+
+    <script>
+        const URL = 'https://script.google.com/macros/s/AKfycbx3sO9llJjmRif80SNPGq0zYkyRXrqb002pkYFEMtBnFj4vGaqN710W0EREXxwmK5o/exec';
+        
+        fetch(URL + "?action=getMenu")
+            .then(r => r.json())
+            .then(data => {
+                let html = "";
+                data.forEach(item => {
+                    html += `<div class="card">
+                        <strong>${item.name}</strong><br>
+                        Restaurant: ${item.restaurant}<br>
+                        Price: ₹${item.price}
+                    </div>`;
+                });
+                document.getElementById('menu').innerHTML = html;
+            })
+            .catch(e => {
+                document.getElementById('menu').innerHTML = "Error loading. Check Google Sheet tab names.";
+            });
+    </script>
 </body>
 </html>
