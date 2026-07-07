@@ -2,195 +2,33 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jaynagar Delivery</title>
 <style>
-:root{--primary:#fc8019;--bg:#f4f4f5;--text:#282c3f;--white:#ffffff;--gray:#7e808c}
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
-body{background:var(--bg);color:var(--text);-webkit-tap-highlight-color:transparent}
-.app-container{max-width:480px;margin:0 auto;background:var(--white);min-height:100vh;overflow-x:hidden;position:relative}
-.header{background:var(--white);padding:15px 20px;position:sticky;top:0;z-index:10;display:flex;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.header h1{font-size:20px;font-weight:700;flex-grow:1}
-.back-btn{font-size:24px;font-weight:bold;margin-right:15px;display:none;cursor:pointer}
-.screen{display:none;padding-bottom:100px;min-height:80vh}
-.screen.active{display:block;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.section-title{padding:20px 20px 10px;font-size:18px;font-weight:700}
-.rest-card{display:flex;margin:15px 20px;padding:15px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.05);border:1px solid #eee;cursor:pointer}
-.rest-emoji{font-size:40px;background:#fdf2ea;padding:15px;border-radius:12px;margin-right:15px}
-.item{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #f0f0f0}
-.item-img{width:90px;height:90px;border-radius:12px;object-fit:cover;background:#eee}
-.add-btn{background:var(--white);border:1px solid #d4d5d9;border-radius:8px;color:#60b246;font-weight:700;display:flex;align-items:center;margin-top:-15px}
-.add-btn button{padding:8px 12px;font-size:16px;cursor:pointer;background:none;border:none;color:#60b246;font-weight:bold}
-.add-btn span{padding:8px 0;min-width:20px;text-align:center}
-.bill-card{margin:20px;background:var(--white);border-radius:16px;padding:20px;border:1px dashed #d4d5d9}
-.bill-row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:14px;color:var(--gray)}
-.bill-total{border-top:1px solid #eee;margin-top:10px;padding-top:15px;font-weight:700;color:var(--text);font-size:18px}
-.form-group{padding:0 20px 15px}
-.form-group input{width:100%;padding:15px;border:1px solid #d4d5d9;border-radius:12px;font-size:15px;background:#f9f9f9}
-.btn{background:var(--primary);color:#fff;border:none;padding:18px;border-radius:12px;width:100%;font-weight:700;font-size:16px;text-transform:uppercase}
-.loc-btn{background:#e2f0fb;color:#007aff;border:none;padding:15px;border-radius:12px;width:100%;font-weight:600;font-size:15px;margin-bottom:20px}
-.nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--white);display:flex;justify-content:space-around;padding:12px 0;box-shadow:0 -2px 10px rgba(0,0,0,.05);z-index:100}
-.nav-item{text-align:center;font-size:12px;color:var(--gray);cursor:pointer;flex:1}
-.nav-item.active{color:var(--primary);font-weight:bold}
-.cart-bar{position:fixed;bottom:70px;left:20px;right:20px;max-width:440px;margin:0 auto;background:#60b246;color:#fff;padding:15px 20px;border-radius:12px;display:none;justify-content:space-between;align-items:center;z-index:99;cursor:pointer}
-.support-btn{display:flex;align-items:center;justify-content:center;padding:16px;border-radius:12px;margin:0 20px 15px;text-decoration:none;font-weight:bold;color:#fff;font-size:16px}
-.track-box{margin:20px;padding:20px;border-radius:16px;background:#f9f9f9;border:1px solid #eee;text-align:center;display:none}
-#loader{text-align:center;padding:40px;color:var(--primary);font-weight:bold}
+body { font-family: sans-serif; text-align: center; padding: 20px; }
+#loader { color: #fc8019; font-weight: bold; }
 </style>
 </head>
 <body>
-<div class="app-container">
-    <div class="header"><div class="back-btn" id="backBtn" onclick="goBack()">←</div><h1 id="headerTitle">Jaynagar Delivery</h1></div>
-    
-    <div id="homeScreen" class="screen active">
-        <div id="loader">Loading Live Menu...</div>
-        <div id="restContainer" style="display:none;">
-            <div class="section-title">Restaurants</div>
-            <div class="rest-card" onclick="openMenu('Biryani Darbar')"><div class="rest-emoji">🍲</div><div><h3 style="font-size:18px">Biryani Darbar</h3><p style="color:gray;font-size:13px">North Indian, Biryani</p></div></div>
-            <div class="rest-card" onclick="openMenu('Bollywood Cafe')"><div class="rest-emoji">🍔</div><div><h3 style="font-size:18px">Bollywood Cafe</h3><p style="color:gray;font-size:13px">Snacks, Fast Food</p></div></div>
-        </div>
+    <div id="loader">Loading Menu...</div>
+    <div id="content" style="display:none;">
+        <h1>Jaynagar Delivery</h1>
+        <p>System Connected Successfully.</p>
     </div>
-
-    <div id="menuScreen" class="screen"><div id="menuItemsContainer"></div></div>
-
-    <div id="checkoutScreen" class="screen">
-        <div class="section-title">Summary</div><div id="checkoutItems" style="padding:0 20px;font-size:14px;margin-bottom:10px;font-weight:600"></div>
-        <div class="bill-card">
-            <div class="bill-row"><span>Items</span><span id="billSubtotal">₹0</span></div>
-            <div class="bill-row"><span>GST (5%)</span><span id="billGst">₹0</span></div>
-            <div class="bill-row"><span>Delivery</span><span id="billDelivery">₹--</span></div>
-            <div class="bill-row bill-total"><span>Total To Pay</span><span id="billTotal">₹0</span></div>
-        </div>
-        <div class="form-group"><input type="text" id="custName" placeholder="Full Name"></div>
-        <div class="form-group"><input type="number" id="custPhone" placeholder="Phone (10 digits)"></div>
-        <div style="padding:0 20px;"><button class="loc-btn" id="locBtn" onclick="getLocation()">📍 Tap for GPS Delivery Distance</button></div>
-        <div style="padding:0 20px;"><button class="btn" id="submitBtn" onclick="submitOrder()" disabled style="opacity:0.5">Select Location First</button></div>
-    </div>
-
-    <div id="trackScreen" class="screen">
-        <div class="section-title">Track Order</div>
-        <div class="form-group"><input type="number" id="trackPhone" placeholder="Enter phone number"></div>
-        <div style="padding:0 20px;"><button class="btn" onclick="trackOrder()">Get Status</button></div>
-        <div class="track-box" id="trackBox">Current Status:<br><span id="trackResult" style="color:#fc8019;font-weight:bold;font-size:18px">Loading...</span></div>
-    </div>
-
-    <div id="supportScreen" class="screen">
-        <div class="section-title" style="text-align:center">Need Help?</div>
-        <a href="https://wa.me/918851463530?text=Hi%20Jaynagar%20Delivery%2C%20I%20need%20help%20with%20my%20order" class="support-btn" style="background:#25D366">💬 WhatsApp Lucky</a>
-        <a href="tel:+916206671465" class="support-btn" style="background:#34B7F1">📞 Call Mona Jayswal</a>
-        <a href="mailto:dragonlj6@gmail.com" class="support-btn" style="background:#EA4335">✉️ Email Support</a>
-    </div>
-
-    <div id="successScreen" class="screen" style="text-align:center;padding-top:80px">
-        <div style="font-size:60px">✅</div><h2 style="color:#60b246;margin-bottom:20px">Order Placed!</h2>
-        <button onclick="location.reload()" style="background:#fc8019;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:bold">Home</button>
-    </div>
-
-    <div class="cart-bar" id="floatingCart" onclick="switchTab('checkout')"><h3 id="cartCount">0 items</h3><h3>Checkout →</h3></div>
-
-    <div class="nav" id="bottomNav">
-        <div class="nav-item active" id="nav-home" onclick="switchTab('home')"><span style="font-size:22px;display:block">🏠</span>Home</div>
-        <div class="nav-item" id="nav-track" onclick="switchTab('track')"><span style="font-size:22px;display:block">📍</span>Track</div>
-        <div class="nav-item" id="nav-support" onclick="switchTab('support')"><span style="font-size:22px;display:block">🎧</span>Support</div>
-    </div>
-</div>
-
 <script>
-const URL = 'https://script.google.com/macros/s/AKfycbxLpEKD2Sw_G-k9DiStiArMcfzcC7gdAXtpvESrzEpv6e7QPi5lJ9vXkKFY4KKzFLL/exec';
-let menu=[], rest='', cart={}, fee=0, loc='', dist=0;
-
+const URL = 'https://script.google.com/macros/s/AKfycbxLpEKD2Sw_G-k9Oi6tiArMcfzeC7gdAXtpvESrzEpv6e7QPi5lJ9vXkKFY4KKzFLL/exec';
 window.onload = () => {
-    fetch(URL+"?action=getMenu&t="+Date.now()).then(r=>r.json()).then(d=>{
-        menu=d; document.getElementById('loader').style.display='none';
-        document.getElementById('restContainer').style.display='block';
-    }).catch(e=>document.getElementById('loader').innerText="Network Error. Check Google Sheet 'Menu' tab.");
-};
-
-function switchTab(t) {
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    document.getElementById(t+'Screen').classList.add('active');
-    if(document.getElementById('nav-'+t)) document.getElementById('nav-'+t).classList.add('active');
-    document.getElementById('headerTitle').innerText = t==='home'?'Jaynagar Delivery':(t==='track'?'Track Order':(t==='support'?'Support':'Checkout'));
-    document.getElementById('backBtn').style.display = t==='menu'||t==='checkout'?'block':'none';
-    updateUI(); if(t==='checkout') loadCheckout();
-}
-function goBack() { switchTab('home'); }
-
-function openMenu(r) {
-    rest=r; cart={}; let c=document.getElementById('menuItemsContainer'), html='';
-    menu.filter(i=>i.restaurant===r).forEach((i,x)=>{
-        html+=`<div class="item"><div style="flex:1"><h4>${i.name}</h4><div style="font-weight:bold;color:#3e4152;margin:5px 0">₹${i.price}</div></div>
-        <div style="display:flex;flex-direction:column;align-items:center">
-        ${i.image?`<img src="${i.image}" class="item-img">`:`<div class="item-img"></div>`}
-        <div class="add-btn"><button onclick="add('${x}','${i.name}',${i.price},-1)">-</button><span id="q${x}">0</span><button onclick="add('${x}','${i.name}',${i.price},1)">+</button></div>
-        </div></div>`;
+    fetch(URL + "?action=getMenu&t=" + Date.now())
+    .then(r => r.json())
+    .then(d => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        console.log("Menu loaded:", d);
+    })
+    .catch(e => {
+        document.getElementById('loader').innerText = "Network Error. Check Google Sheet 'Menu' tab.";
     });
-    c.innerHTML = html||"<p style='padding:20px;text-align:center'>Menu updating soon</p>";
-    switchTab('menu'); document.getElementById('headerTitle').innerText=r;
-}
-
-function add(id,n,p,c) {
-    if(!cart[id]) cart[id]={n:n,p:p,q:0}; cart[id].q+=c; if(cart[id].q<=0) delete cart[id];
-    document.getElementById('q'+id).innerText=cart[id]?cart[id].q:0;
-    loc=''; document.getElementById('locBtn').innerText='📍 Tap for GPS Delivery Distance';
-    document.getElementById('submitBtn').disabled=true; document.getElementById('submitBtn').style.opacity=0.5;
-    updateUI();
-}
-
-function updateUI() {
-    let t=0, v=0; for(let k in cart){t+=cart[k].q; v+=cart[k].q*cart[k].p;}
-    let scr = document.querySelector('.screen.active').id;
-    document.getElementById('floatingCart').style.display = (t>0 && scr!=='checkoutScreen' && scr!=='successScreen')?'flex':'none';
-    document.getElementById('bottomNav').style.display = t>0?'none':'flex';
-    document.getElementById('cartCount').innerText = `${t} item(s) | ₹${v}`;
-}
-
-function loadCheckout() {
-    let v=0, html=''; for(let k in cart){v+=cart[k].q*cart[k].p; html+=`${cart[k].q}x ${cart[k].n}<br>`;}
-    document.getElementById('checkoutItems').innerHTML=html; document.getElementById('billSubtotal').innerText=`₹${v}`;
-    document.getElementById('billGst').innerText=`₹${Math.round(v*.05)}`; document.getElementById('billTotal').innerText=`₹${v+Math.round(v*.05)}`;
-    document.getElementById('billDelivery').innerText='Calculate Location';
-}
-
-function getDist(l1,ln1,l2,ln2) {
-    let p=Math.PI/180, a=Math.sin((l2-l1)*p/2)**2 + Math.cos(l1*p)*Math.cos(l2*p)*Math.sin((ln2-ln1)*p/2)**2;
-    return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-function getLocation() {
-    let b=document.getElementById('locBtn'); b.innerText='📍 Calculating...';
-    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(p=>{
-        loc = p.coords.latitude+", "+p.coords.longitude;
-        dist = getDist(26.5861, 86.1293, p.coords.latitude, p.coords.longitude);
-        let v=0; for(let k in cart) v+=cart[k].q*cart[k].p;
-        if(v>=300||dist<=1) fee=0; else if(dist<=3) fee=20; else if(dist<=6) fee=50; else if(dist<=10) fee=70;
-        else { alert('Too far (10km+ limit)'); b.innerText='❌ Too far'; return; }
-        document.getElementById('billDelivery').innerText=`₹${fee} (${dist.toFixed(1)}km)`;
-        let tot = v+Math.round(v*.05)+fee; document.getElementById('billTotal').innerText=`₹${tot}`;
-        b.innerText=`✅ Location Set (${dist.toFixed(1)}km)`;
-        let s=document.getElementById('submitBtn'); s.disabled=false; s.style.opacity=1; s.innerText=`Place Order • ₹${tot}`;
-    }, e=>b.innerText='❌ GPS Error. Turn on Location.');
-}
-
-function submitOrder() {
-    let n=document.getElementById('custName').value, p=document.getElementById('custPhone').value;
-    if(!n||p.length<10) return alert('Enter name and 10-digit phone');
-    let v=0, str=''; for(let k in cart){v+=cart[k].q*cart[k].p; str+=`${cart[k].q}x ${cart[k].n}, `;}
-    let tot=v+Math.round(v*.05)+fee; document.getElementById('submitBtn').innerText='Processing...';
-    let f = new URLSearchParams(); f.append('Customer Name',n); f.append('Phone Number',p);
-    f.append('Restaurant',rest); f.append('Order Details',str); f.append('Total Bill (₹)',tot);
-    f.append('Delivery Fee (₹)',fee); f.append('GPS Coordinates',loc);
-    fetch(URL, {method:'POST',body:f}).then(r=>{ switchTab('success'); cart={}; }).catch(e=>{ alert('Error.'); document.getElementById('submitBtn').innerText='Place Order'; });
-}
-
-function trackOrder() {
-    let p=document.getElementById('trackPhone').value; if(p.length<10) return alert('Enter valid phone');
-    document.getElementById('trackBox').style.display='block'; document.getElementById('trackResult').innerText='Searching...';
-    fetch(URL+"?action=trackOrder&phone="+p+"&t="+Date.now()).then(r=>r.json()).then(d=>document.getElementById('trackResult').innerText=d.status).catch(e=>document.getElementById('trackResult').innerText='Network Error');
-}
+};
 </script>
 </body>
 </html>
-
