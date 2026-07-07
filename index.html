@@ -101,7 +101,7 @@ const URL = 'https://script.google.com/macros/s/AKfycby5pOYHki5Y9-NR115RsVqDPlGT
 let menu=[], rest='', cart={}, fee=0, loc='', dist=0;
 
 window.onload = () => {
-    fetch(URL+"?action=getMenu").then(r=>r.json()).then(d=>{
+    fetch(URL+"?action=getMenu&t="+Date.now()).then(r=>r.json()).then(d=>{
         menu=d; document.getElementById('loader').style.display='none';
         document.getElementById('restContainer').style.display='block';
     }).catch(e=>document.getElementById('loader').innerText="Network Error. Check Google Sheet 'Menu' tab.");
@@ -188,7 +188,7 @@ function submitOrder() {
 function trackOrder() {
     let p=document.getElementById('trackPhone').value; if(p.length<10) return alert('Enter valid phone');
     document.getElementById('trackBox').style.display='block'; document.getElementById('trackResult').innerText='Searching...';
-    fetch(URL+"?action=trackOrder&phone="+p).then(r=>r.json()).then(d=>document.getElementById('trackResult').innerText=d.status).catch(e=>document.getElementById('trackResult').innerText='Network Error');
+    fetch(URL+"?action=trackOrder&phone="+p+"&t="+Date.now()).then(r=>r.json()).then(d=>document.getElementById('trackResult').innerText=d.status).catch(e=>document.getElementById('trackResult').innerText='Network Error');
 }
 </script>
 </body>
