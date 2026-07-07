@@ -3,59 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaynagar Delivery Pro</title>
+    <title>Jaynagar Delivery</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 pb-20">
+<body class="bg-gray-100 pb-20 font-sans">
 
     <!-- Header -->
-    <header class="bg-orange-500 text-white p-4 shadow-lg sticky top-0 z-10">
-        <h1 class="text-xl font-bold">Jaynagar Delivery</h1>
+    <header class="bg-orange-500 text-white p-4 shadow-md sticky top-0 z-10">
+        <h1 class="text-2xl font-bold text-center">Jaynagar Delivery</h1>
     </header>
 
     <!-- Menu Section -->
-    <main id="menu" class="p-4 space-y-4">
-        <p class="text-gray-500 text-center">Loading premium menu...</p>
+    <main class="p-4 max-w-md mx-auto">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Recommended for You</h2>
+        <div id="menu" class="space-y-4">
+            <p class="text-gray-500 text-center">Loading fresh menu...</p>
+        </div>
     </main>
 
+    <!-- Track Order Modal (Hidden by default) -->
+    <div id="trackModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+        <div class="bg-white p-6 rounded-xl shadow-lg w-11/12 max-w-sm">
+            <h3 class="font-bold text-lg mb-2">Track Your Order</h3>
+            <input type="text" id="trackPhone" placeholder="Enter phone number" class="w-full border p-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <button onclick="checkStatus()" class="w-full bg-orange-500 text-white font-bold py-2 rounded shadow">Check Status</button>
+            <p id="trackResult" class="mt-4 font-bold text-center text-gray-700"></p>
+            <button onclick="closeModal('trackModal')" class="mt-4 w-full text-gray-500 underline font-semibold">Close</button>
+        </div>
+    </div>
+
+    <!-- Support Modal (Hidden by default) -->
+    <div id="supportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+        <div class="bg-white p-6 rounded-xl shadow-lg w-11/12 max-w-sm space-y-3">
+            <h3 class="font-bold text-lg mb-2">Customer Care</h3>
+            <a href="https://wa.me/918851463530" class="block w-full bg-green-500 text-white text-center font-bold py-2 rounded shadow">Chat with Lucky</a>
+            <a href="https://wa.me/916206671465" class="block w-full bg-green-500 text-white text-center font-bold py-2 rounded shadow">Chat with Mona Jaiswal</a>
+            <a href="mailto:dragonlj6@gmail.com" class="block w-full bg-red-500 text-white text-center font-bold py-2 rounded shadow">Email Support</a>
+            <a href="https://gemini.google.com" class="block w-full bg-blue-500 text-white text-center font-bold py-2 rounded shadow">Ask AI Assistant</a>
+            <button onclick="closeModal('supportModal')" class="mt-2 w-full text-gray-500 underline font-semibold">Close</button>
+        </div>
+    </div>
+
     <!-- Bottom Nav Bar -->
-    <nav class="fixed bottom-0 w-full bg-white border-t p-3 flex justify-around text-orange-500 font-bold shadow-2xl">
-        <button onclick="document.getElementById('menu').scrollIntoView()">Home</button>
-        <button onclick="showTrack()">Track</button>
-        <button onclick="showSupport()">Support</button>
+    <nav class="fixed bottom-0 w-full bg-white border-t p-3 flex justify-around text-gray-500 font-bold shadow-2xl max-w-md mx-auto left-0 right-0">
+        <button onclick="window.scrollTo(0,0)" class="flex flex-col items-center hover:text-orange-500 focus:text-orange-500">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+            <span class="text-xs mt-1">Home</span>
+        </button>
+        <button onclick="openModal('trackModal')" class="flex flex-col items-center hover:text-orange-500 focus:text-orange-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            <span class="text-xs mt-1">Track</span>
+        </button>
+        <button onclick="openModal('supportModal')" class="flex flex-col items-center hover:text-orange-500 focus:text-orange-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <span class="text-xs mt-1">Support</span>
+        </button>
     </nav>
 
     <script>
-        const URL = 'YOUR_URL_HERE'; // PASTE YOUR SCRIPT URL HERE
+        // PUT YOUR COPIED URL RIGHT HERE INSIDE THE QUOTES:
+        const URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec'
 
-        // Load Menu
-        fetch(URL + "?action=getMenu").then(r=>r.json()).then(data => {
-            let html = "<h2 class='text-lg font-bold text-gray-700'>Recommended for You</h2>";
-            data.forEach(item => {
-                html += `<div class='bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center'>
-                            <div><p class='font-bold'>${item.name}</p><p class='text-sm text-gray-500'>${item.restaurant}</p></div>
-                            <p class='font-bold text-orange-600'>₹${item.price}</p>
-                         </div>`;
+        // Load Menu from Google Sheet
+        fetch(URL + "?action=getMenu")
+            .then(response => response.json())
+            .then(data => {
+                let html = "";
+                data.forEach(item => {
+                    html += `
+                    <div class='bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border border-gray-100'>
+                        <div>
+                            <p class='font-bold text-gray-800 text-lg'>${item.name}</p>
+                            <p class='text-sm text-gray-500'>${item.restaurant}</p>
+                        </div>
+                        <div class='text-right'>
+                            <p class='font-extrabold text-orange-600 text-lg'>₹${item.price}</p>
+                            <button class="mt-1 bg-orange-100 text-orange-600 text-xs font-bold px-4 py-1 rounded-full shadow-sm">Add</button>
+                        </div>
+                    </div>`;
+                });
+                document.getElementById('menu').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('menu').innerHTML = "<p class='text-red-500 text-center font-bold'>Menu is offline.</p>";
             });
-            document.getElementById('menu').innerHTML = html;
-        });
 
-        function showTrack() {
-            let phone = prompt("Enter your phone number to track order:");
-            if (phone) {
-                fetch(URL + "?action=trackOrder&phone=" + phone)
-                .then(r => r.text())
-                .then(data => alert(data));
-            }
+        // Popup Functions
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { 
+            document.getElementById(id).classList.add('hidden'); 
+            if(id === 'trackModal') document.getElementById('trackResult').innerText = "";
         }
 
-        function showSupport() {
-            const support = `Support Hub:
-            1. Chat with Lucky: 8851463530
-            2. Chat with Mona Jaiswal: 6206671465
-            3. Email: dragonlj6@gmail.com
-            4. Ask AI: gemini.google.com`;
-            alert(support);
+        // Track Order Function
+        function checkStatus() {
+            let phone = document.getElementById('trackPhone').value;
+            if(!phone) {
+                document.getElementById('trackResult').innerText = "Please enter a number.";
+                return;
+            }
+            document.getElementById('trackResult').innerText = "Finding your order...";
+            
+            fetch(URL + "?action=trackOrder&phone=" + phone)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('trackResult').innerText = data;
+            })
+            .catch(error => {
+                document.getElementById('trackResult').innerText = "Error checking status.";
+            });
         }
     </script>
 </body>
