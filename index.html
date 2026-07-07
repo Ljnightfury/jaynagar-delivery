@@ -9,6 +9,7 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
+    <!-- Header -->
     <header class="bg-orange-500 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
         <h1 class="text-xl font-bold">Blinkup</h1>
         <button onclick="switchView('cart-view')" class="relative">
@@ -19,17 +20,20 @@
 
     <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Connecting to servers...</div>
 
+    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-lg font-bold mb-4 text-gray-600">Explore Restaurants</h2>
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
+    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
         <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center">&larr; Back</button>
         <h2 id="current-restaurant-name" class="text-xl font-extrabold mb-4">Menu</h2>
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
+    <!-- Track View -->
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Track Order</h2>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
@@ -39,10 +43,12 @@
         </div>
     </main>
 
+    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Checkout</h2>
         <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center"></div>
         <div id="cart-items" class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100 space-y-2"></div>
+        
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 space-y-2 text-sm">
             <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
             <div class="flex justify-between"><span>Item Total</span><span id="bill-item-total">₹0</span></div>
@@ -50,7 +56,19 @@
             <div class="flex justify-between text-orange-600 font-bold cursor-pointer" onclick="calculateDelivery()">
                 <span>Delivery Fee</span><span id="bill-delivery">Calc Loc &rarr;</span>
             </div>
+            <div id="bill-discount-row" class="flex justify-between text-green-600 font-bold hidden">
+                <span>Coupon Discount</span><span id="bill-discount">-₹0</span>
+            </div>
             <div class="flex justify-between font-extrabold text-lg border-t pt-2 mt-2"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
+            
+            <!-- Coupon Input Section -->
+            <div class="pt-4 border-t mt-2">
+                <div class="flex gap-2">
+                    <input type="text" id="coupon-code" placeholder="WELCOME10 or BLINK15" class="w-full border p-2 rounded outline-none text-xs uppercase placeholder-gray-400">
+                    <button onclick="applyCoupon()" class="bg-gray-800 text-white font-bold px-3 py-1 rounded text-xs hover:bg-gray-700">Apply</button>
+                </div>
+                <div id="coupon-message" class="text-[11px] mt-1 font-bold hidden"></div>
+            </div>
         </div>
         
         <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
@@ -65,6 +83,7 @@
         </div>
     </main>
 
+    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4">Support</h2>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-3">
@@ -74,6 +93,7 @@
         </div>
     </main>
 
+    <!-- FLOATING CART SUMMARY -->
     <div id="floating-cart" class="fixed bottom-[65px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
         <div onclick="switchView('cart-view')" class="bg-green-600 text-white p-3 rounded-xl flex justify-between items-center shadow-lg cursor-pointer">
             <div class="font-bold text-sm">
@@ -85,6 +105,7 @@
         </div>
     </div>
 
+    <!-- Bottom Navigation -->
     <nav class="fixed bottom-0 w-full bg-white border-t p-2 grid grid-cols-4 gap-1 text-gray-500 font-bold shadow-2xl z-20">
         <button onclick="switchView('home-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Home</span></button>
         <button onclick="switchView('track-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Track</span></button>
@@ -101,7 +122,7 @@
 
         let db = { restaurants: [], menu: [] };
         let cart = {};
-        let finalTotals = { itemTotal: 0, gst: 0, delivery: null, grandTotal: 0, distance: null };
+        let finalTotals = { itemTotal: 0, gst: 0, delivery: null, discount: 0, grandTotal: 0, distance: null, couponApplied: "" };
         let currentRestId = null;
         let customerLat = null; 
         let customerLon = null; 
@@ -270,7 +291,59 @@
 
             finalTotals.delivery = null;
             document.getElementById('bill-delivery').innerText = "Calc Loc \u2192";
+            reapplyCoupon();
             updateGrandTotal();
+        }
+
+        function applyCoupon() {
+            let code = document.getElementById('coupon-code').value.trim().toUpperCase();
+            let msg = document.getElementById('coupon-message');
+            let discountRow = document.getElementById('bill-discount-row');
+            
+            if (finalTotals.itemTotal === 0) {
+                alert("Add items to your cart first!");
+                return;
+            }
+            
+            if (code === "WELCOME10") {
+                finalTotals.discount = Math.round(finalTotals.itemTotal * 0.10);
+                finalTotals.couponApplied = "WELCOME10";
+                msg.innerText = "🎉 WELCOME10 applied: 10% Off structural discount!";
+                msg.className = "text-xs mt-1 font-bold text-green-600 block";
+                discountRow.classList.remove('hidden');
+            } else if (code === "BLINK15") {
+                finalTotals.discount = Math.round(finalTotals.itemTotal * 0.15);
+                finalTotals.couponApplied = "BLINK15";
+                msg.innerText = "🎉 BLINK15 applied: 15% Off VIP discount!";
+                msg.className = "text-xs mt-1 font-bold text-green-600 block";
+                discountRow.classList.remove('hidden');
+            } else if (code === "") {
+                finalTotals.discount = 0;
+                finalTotals.couponApplied = "";
+                msg.classList.add('hidden');
+                discountRow.classList.add('hidden');
+            } else {
+                finalTotals.discount = 0;
+                finalTotals.couponApplied = "";
+                msg.innerText = "Invalid coupon code format.";
+                msg.className = "text-xs mt-1 font-bold text-red-600 block";
+                discountRow.classList.add('hidden');
+            }
+            
+            document.getElementById('bill-discount').innerText = "-₹" + finalTotals.discount;
+            updateGrandTotal();
+        }
+
+        function reapplyCoupon() {
+            if (finalTotals.couponApplied !== "") {
+                let msg = document.getElementById('coupon-message');
+                let discountRow = document.getElementById('bill-discount-row');
+                let pct = finalTotals.couponApplied === "WELCOME10" ? 0.10 : 0.15;
+                
+                finalTotals.discount = Math.round(finalTotals.itemTotal * pct);
+                document.getElementById('bill-discount').innerText = "-₹" + finalTotals.discount;
+                discountRow.classList.remove('hidden');
+            }
         }
 
         function updateGrandTotal() {
@@ -280,7 +353,8 @@
                 btn.disabled = true;
                 return; 
             }
-            finalTotals.grandTotal = finalTotals.itemTotal + finalTotals.gst + finalTotals.delivery;
+            finalTotals.grandTotal = finalTotals.itemTotal + finalTotals.gst + finalTotals.delivery - finalTotals.discount;
+            if (finalTotals.grandTotal < 0) finalTotals.grandTotal = 0;
             document.getElementById('bill-grand-total').innerText = "₹" + finalTotals.grandTotal;
             btn.disabled = false;
         }
@@ -302,12 +376,31 @@
                 finalTotals.distance = distance.toFixed(2);
                 let fee = 0;
                 
-                if(finalTotals.itemTotal < 300) {
-                    if(distance <= 1) fee = 0; 
-                    else if(distance <= 3) fee = 20; 
-                    else if(distance <= 6) fee = 50; 
-                    else if(distance <= 10) fee = 70; 
-                    else { alert(`You are ${finalTotals.distance}km away. We do not deliver beyond 10km.`); document.getElementById('bill-delivery').innerText = "Out of Zone"; return; }
+                if (distance > 10) {
+                    alert(`You are ${finalTotals.distance}km away. We do not deliver beyond 10km.`);
+                    document.getElementById('bill-delivery').innerText = "Out of Zone";
+                    return;
+                }
+
+                // Tier A: Small Orders Engine (Under ₹100)
+                if (finalTotals.itemTotal < 100) {
+                    if(distance <= 1) fee = 20;
+                    else if(distance <= 2) fee = 25;
+                    else if(distance <= 3) fee = 35;
+                    else if(distance <= 4) fee = 50;
+                    else if(distance <= 6) fee = 70;
+                    else fee = 90; 
+                } 
+                // Tier B: Regular Orders Engine (₹100 or More)
+                else {
+                    if (finalTotals.itemTotal < 300) {
+                        if(distance <= 1) fee = 0; 
+                        else if(distance <= 3) fee = 20; 
+                        else if(distance <= 6) fee = 50; 
+                        else fee = 70; 
+                    } else {
+                        fee = 0; 
+                    }
                 }
                 
                 finalTotals.delivery = fee;
@@ -329,6 +422,8 @@
                 item_total: finalTotals.itemTotal, 
                 gst_amount: finalTotals.gst, 
                 delivery_fee: finalTotals.delivery, 
+                discount_amount: finalTotals.discount,
+                coupon_code: finalTotals.couponApplied || "NONE",
                 grand_total: finalTotals.grandTotal, 
                 payment_method: document.getElementById('payment-method').value,
                 lat: customerLat, 
@@ -344,8 +439,18 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(orderData) })
             .then(res => res.text())
             .then(id => { 
-                alert("Order Confirmed! Your Order ID is: " + id);
+                let confirmationText = "Order Confirmed! Your Order ID is: " + id;
+                
+                // If order value qualifies for a bounce-back coupon reward
+                if (finalTotals.itemTotal >= 400) {
+                    confirmationText += "\n\n🎉 BOOM! Because your order is above ₹400, use coupon code BLINK15 on your next purchase to get 15% off!";
+                }
+                
+                alert(confirmationText);
                 cart = {};
+                finalTotals.couponApplied = "";
+                finalTotals.discount = 0;
+                document.getElementById('coupon-code').value = "";
                 updateCartCount();
                 document.getElementById('cust-name').value = "";
                 document.getElementById('cust-address').value = "";
