@@ -8,38 +8,57 @@
     <style>
         .hidden { display: none !important; } 
         .view-section { padding-bottom: 90px; }
-        /* Adds a nice smooth transition when icons change color */
         .nav-btn { transition: color 0.2s ease-in-out; } 
     </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <header class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
+    <!-- Header (Upgraded to White & Purple Theme) -->
+    <header class="bg-white text-purple-900 p-4 shadow-sm border-b border-gray-100 sticky top-0 z-20 flex justify-between items-center">
         <div class="flex items-center gap-2">
-            <svg class="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.381z" clip-rule="evenodd"></path></svg>
-            <h1 class="text-2xl font-extrabold tracking-tight">Blinkup</h1>
+            
+            <!-- PURE CODE ORIGAMI BIRD LOGO -->
+            <svg class="w-10 h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Wing -->
+                <path d="M12 12 L28 32 L40 18 Z" fill="#b48eed" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Head/Beak -->
+                <path d="M28 32 L48 34 L58 40 L44 42 Z" fill="#9333ea" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Bottom Wing/Tail -->
+                <path d="M28 32 L44 42 L24 58 L32 46 Z" fill="#7e22ce" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
+                <!-- String -->
+                <path d="M52 38 L48 46" stroke="#4c1d95" stroke-width="2"/>
+                <path d="M52 38 L56 46" stroke="#4c1d95" stroke-width="2"/>
+                <!-- Box -->
+                <rect x="46" y="46" width="12" height="12" fill="#c084fc" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M52 46 L52 58" stroke="#4c1d95" stroke-width="2"/>
+                <path d="M46 52 L58 52" stroke="#4c1d95" stroke-width="2"/>
+            </svg>
+            
+            <h1 class="text-2xl font-extrabold tracking-tight text-purple-900">Blinkup</h1>
         </div>
-        <button onclick="switchView('cart-view')" class="relative p-1">
+        <button onclick="switchView('cart-view')" class="relative p-1 text-purple-900">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-            <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-orange-600 text-xs font-black rounded-full w-5 h-5 flex items-center justify-center shadow-md">0</span>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-purple-600 text-white text-xs font-black rounded-full w-5 h-5 flex items-center justify-center shadow-md">0</span>
         </button>
     </header>
 
-    <div id="loading" class="text-center mt-12 text-orange-500 font-bold animate-pulse flex flex-col items-center">
+    <div id="loading" class="text-center mt-12 text-purple-600 font-bold animate-pulse flex flex-col items-center">
         <svg class="w-10 h-10 mb-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
         Loading amazing food...
     </div>
 
+    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-lg font-bold mb-4 text-gray-600 flex items-center gap-2">
-            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             Explore Restaurants
         </h2>
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
+    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center gap-1 bg-orange-50 px-3 py-1.5 rounded-full w-max">
+        <button onclick="switchView('home-view')" class="mb-4 text-sm text-purple-600 font-bold flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-full w-max border border-purple-100">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             Back
         </button>
@@ -47,15 +66,17 @@
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
+    <!-- Track View -->
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Track Order</h2>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
-            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
-            <button onclick="runTrackOrder()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-md transition-colors">Check Status</button>
+            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
+            <button onclick="runTrackOrder()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl shadow-md transition-colors">Check Status</button>
             <div id="track-result" class="mt-4"></div>
         </div>
     </main>
 
+    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Checkout</h2>
         <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-xl text-sm font-bold mb-4 text-center"></div>
@@ -65,7 +86,7 @@
             <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
             <div class="flex justify-between text-gray-600"><span>Item Total</span><span id="bill-item-total" class="font-medium">₹0</span></div>
             <div class="flex justify-between text-gray-600"><span>GST (5%)</span><span id="bill-gst" class="font-medium">₹0</span></div>
-            <div class="flex justify-between text-orange-600 font-bold cursor-pointer bg-orange-50 p-2 rounded-lg -mx-2" onclick="calculateDelivery()">
+            <div class="flex justify-between text-purple-600 font-bold cursor-pointer bg-purple-50 p-2 rounded-lg -mx-2" onclick="calculateDelivery()">
                 <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Delivery Fee</span>
                 <span id="bill-delivery">Calc Loc &rarr;</span>
             </div>
@@ -84,17 +105,18 @@
         </div>
         
         <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
-            <input type="text" id="cust-name" placeholder="Full Name" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
-            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
-            <input type="text" id="cust-address" placeholder="Complete Delivery Address" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
-            <select id="payment-method" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors font-medium">
+            <input type="text" id="cust-name" placeholder="Full Name" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
+            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
+            <input type="text" id="cust-address" placeholder="Complete Delivery Address" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
+            <select id="payment-method" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors font-medium">
                 <option value="UPI">Pay via UPI</option>
                 <option value="COD">Cash on Delivery</option>
             </select>
-            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl text-lg shadow-lg disabled:bg-gray-400 transition-all">Place Order</button>
+            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl text-lg shadow-lg disabled:bg-gray-400 transition-all">Place Order</button>
         </div>
     </main>
 
+    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Support Center</h2>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
@@ -113,6 +135,7 @@
         </div>
     </main>
 
+    <!-- FLOATING CART SUMMARY -->
     <div id="floating-cart" class="fixed bottom-[80px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
         <div onclick="switchView('cart-view')" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl flex justify-between items-center shadow-xl cursor-pointer">
             <div class="font-bold text-sm">
@@ -124,9 +147,9 @@
         </div>
     </div>
 
+    <!-- BOTTOM NAVIGATION -->
     <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-2 grid grid-cols-4 gap-1 shadow-[0_-4px_15px_-5px_rgba(0,0,0,0.1)] z-20 pb-4">
-        
-        <button id="nav-home-view" onclick="switchView('home-view')" class="nav-btn flex flex-col items-center justify-center text-orange-500 p-1">
+        <button id="nav-home-view" onclick="switchView('home-view')" class="nav-btn flex flex-col items-center justify-center text-purple-600 p-1">
             <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             <span class="text-[10px] font-bold">Home</span>
         </button>
@@ -145,7 +168,6 @@
             <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             <span class="text-[10px] font-bold">Support</span>
         </button>
-
     </nav>
 
     <script>
@@ -188,15 +210,14 @@
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
             
-            // NEW LOGIC: Changes the color of the bottom icons when tapped!
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-orange-500');
+                btn.classList.remove('text-purple-600');
                 btn.classList.add('text-gray-400');
             });
             let activeIcon = document.getElementById('nav-' + viewId);
             if(activeIcon) {
                 activeIcon.classList.remove('text-gray-400');
-                activeIcon.classList.add('text-orange-500');
+                activeIcon.classList.add('text-purple-600');
             }
             
             if(viewId === 'cart-view') {
@@ -216,7 +237,7 @@
             let res = document.getElementById('track-result');
             
             if(!phone) return alert("Please enter a phone number.");
-            res.innerHTML = "<p class='text-center text-orange-500 font-bold'>Fetching...</p>";
+            res.innerHTML = "<p class='text-center text-purple-600 font-bold'>Fetching...</p>";
             
             let fetchUrl = SCRIPT_URL + "?action=trackOrder&phone=" + phone + "&t=" + new Date().getTime();
             
@@ -241,7 +262,7 @@
                                 <span class="text-[9px] mt-1 text-center w-14 font-bold text-gray-600">${s}</span>
                              </div>`;
                 });
-                res.innerHTML = html + `</div><p class="mt-6 text-center font-extrabold text-orange-600 text-lg">Status: ${status}</p>`;
+                res.innerHTML = html + `</div><p class="mt-6 text-center font-extrabold text-purple-700 text-lg">Status: ${status}</p>`;
             });
         }
 
@@ -269,8 +290,8 @@
             items.forEach(item => {
                 let qty = cart[item.id] ? cart[item.id].qty : 0;
                 let btnHtml = qty === 0 
-                    ? `<button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-6 py-2 rounded-xl shadow-sm">ADD</button>`
-                    : `<div class="flex items-center bg-orange-100 text-orange-600 font-bold rounded-xl border border-orange-200">
+                    ? `<button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="bg-purple-50 text-purple-700 border border-purple-200 text-sm font-bold px-6 py-2 rounded-xl shadow-sm">ADD</button>`
+                    : `<div class="flex items-center bg-purple-100 text-purple-700 font-bold rounded-xl border border-purple-200">
                            <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, -1)" class="px-3 py-2 text-lg leading-none">-</button>
                            <span class="px-2 text-sm">${qty}</span>
                            <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="px-3 py-2 text-lg leading-none">+</button>
