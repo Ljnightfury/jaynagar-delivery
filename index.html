@@ -5,112 +5,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blinkup</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>.hidden { display: none !important; } .view-section { padding-bottom: 90px; }</style>
+    <style>
+        .hidden { display: none !important; } 
+        .view-section { padding-bottom: 90px; }
+        /* Adds a nice smooth transition when icons change color */
+        .nav-btn { transition: color 0.2s ease-in-out; } 
+    </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <!-- Header -->
-    <header class="bg-orange-500 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
-        <h1 class="text-xl font-bold">Blinkup</h1>
-        <button onclick="switchView('cart-view')" class="relative">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-white text-orange-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">0</span>
+    <header class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <svg class="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.381z" clip-rule="evenodd"></path></svg>
+            <h1 class="text-2xl font-extrabold tracking-tight">Blinkup</h1>
+        </div>
+        <button onclick="switchView('cart-view')" class="relative p-1">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-orange-600 text-xs font-black rounded-full w-5 h-5 flex items-center justify-center shadow-md">0</span>
         </button>
     </header>
 
-    <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Loading amazing food...</div>
+    <div id="loading" class="text-center mt-12 text-orange-500 font-bold animate-pulse flex flex-col items-center">
+        <svg class="w-10 h-10 mb-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        Loading amazing food...
+    </div>
 
-    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-lg font-bold mb-4 text-gray-600">Explore Restaurants</h2>
+        <h2 class="text-lg font-bold mb-4 text-gray-600 flex items-center gap-2">
+            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            Explore Restaurants
+        </h2>
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
-    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center">&larr; Back</button>
-        <h2 id="current-restaurant-name" class="text-xl font-extrabold mb-4">Menu</h2>
+        <button onclick="switchView('home-view')" class="mb-4 text-sm text-orange-500 font-bold flex items-center gap-1 bg-orange-50 px-3 py-1.5 rounded-full w-max">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back
+        </button>
+        <h2 id="current-restaurant-name" class="text-2xl font-black mb-4 text-gray-800">Menu</h2>
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
-    <!-- Track View -->
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Track Order</h2>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
-            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border p-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-500">
-            <button onclick="runTrackOrder()" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg shadow-md">Check Status</button>
+        <h2 class="text-xl font-extrabold mb-4 text-gray-800">Track Order</h2>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+            <input type="tel" id="track-phone" placeholder="Enter phone number" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
+            <button onclick="runTrackOrder()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-md transition-colors">Check Status</button>
             <div id="track-result" class="mt-4"></div>
         </div>
     </main>
 
-    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Checkout</h2>
-        <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center"></div>
-        <div id="cart-items" class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100 space-y-2"></div>
+        <h2 class="text-xl font-extrabold mb-4 text-gray-800">Checkout</h2>
+        <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-xl text-sm font-bold mb-4 text-center"></div>
+        <div id="cart-items" class="bg-white p-4 rounded-2xl shadow-sm mb-4 border border-gray-100 space-y-2"></div>
         
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-4 space-y-2 text-sm">
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-4 space-y-3 text-sm">
             <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
-            <div class="flex justify-between"><span>Item Total</span><span id="bill-item-total">₹0</span></div>
-            <div class="flex justify-between"><span>GST (5%)</span><span id="bill-gst">₹0</span></div>
-            <div class="flex justify-between text-orange-600 font-bold cursor-pointer" onclick="calculateDelivery()">
-                <span>Delivery Fee</span><span id="bill-delivery">Calc Loc &rarr;</span>
+            <div class="flex justify-between text-gray-600"><span>Item Total</span><span id="bill-item-total" class="font-medium">₹0</span></div>
+            <div class="flex justify-between text-gray-600"><span>GST (5%)</span><span id="bill-gst" class="font-medium">₹0</span></div>
+            <div class="flex justify-between text-orange-600 font-bold cursor-pointer bg-orange-50 p-2 rounded-lg -mx-2" onclick="calculateDelivery()">
+                <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Delivery Fee</span>
+                <span id="bill-delivery">Calc Loc &rarr;</span>
             </div>
             <div id="bill-discount-row" class="flex justify-between text-green-600 font-bold hidden">
                 <span>Coupon Discount</span><span id="bill-discount">-₹0</span>
             </div>
-            <div class="flex justify-between font-extrabold text-lg border-t pt-2 mt-2"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
+            <div class="flex justify-between font-black text-xl border-t pt-3 mt-2 text-gray-800"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
             
-            <!-- Coupon Input Section (HIDDEN PLACEHOLDER) -->
             <div class="pt-4 border-t mt-2">
                 <div class="flex gap-2">
-                    <input type="text" id="coupon-code" placeholder="Enter Coupon Code" class="w-full border p-2 rounded outline-none text-xs uppercase placeholder-gray-400">
-                    <button onclick="applyCoupon()" class="bg-gray-800 text-white font-bold px-3 py-1 rounded text-xs hover:bg-gray-700">Apply</button>
+                    <input type="text" id="coupon-code" placeholder="Enter Coupon Code" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none text-sm uppercase placeholder-gray-400 focus:border-gray-800 transition-colors">
+                    <button onclick="applyCoupon()" class="bg-gray-800 text-white font-bold px-5 py-3 rounded-xl text-sm hover:bg-gray-700 transition-colors">Apply</button>
                 </div>
-                <div id="coupon-message" class="text-[11px] mt-1 font-bold hidden"></div>
+                <div id="coupon-message" class="text-xs mt-2 font-bold hidden"></div>
             </div>
         </div>
         
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
-            <input type="text" id="cust-name" placeholder="Full Name" class="w-full border p-2 rounded outline-none">
-            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full border p-2 rounded outline-none">
-            <input type="text" id="cust-address" placeholder="Address" class="w-full border p-2 rounded outline-none">
-            <select id="payment-method" class="w-full border p-2 rounded outline-none">
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+            <input type="text" id="cust-name" placeholder="Full Name" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
+            <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
+            <input type="text" id="cust-address" placeholder="Complete Delivery Address" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors">
+            <select id="payment-method" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-orange-500 transition-colors font-medium">
                 <option value="UPI">Pay via UPI</option>
                 <option value="COD">Cash on Delivery</option>
             </select>
-            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg disabled:bg-gray-400">Place Order</button>
+            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl text-lg shadow-lg disabled:bg-gray-400 transition-all">Place Order</button>
         </div>
     </main>
 
-    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-xl font-extrabold mb-4">Support</h2>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-3">
-            <a href="https://wa.me/918851463530" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Lucky</a>
-            <a href="https://wa.me/916206671465" class="block w-full bg-green-500 text-white text-center font-bold py-3 rounded-lg shadow">Chat with Mona</a>
-            <a href="mailto:dragonlj6@gmail.com" class="block w-full bg-blue-500 text-white text-center font-bold py-3 rounded-lg shadow">Email Support</a>
+        <h2 class="text-xl font-extrabold mb-4 text-gray-800">Support Center</h2>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+            <a href="https://wa.me/918851463530" class="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-md transition-colors">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                Chat with Lucky
+            </a>
+            <a href="https://wa.me/916206671465" class="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-md transition-colors">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                Chat with Mona
+            </a>
+            <a href="mailto:dragonlj6@gmail.com" class="flex items-center justify-center gap-2 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-4 rounded-xl shadow-md transition-colors mt-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Email Support
+            </a>
         </div>
     </main>
 
-    <!-- FLOATING CART SUMMARY -->
-    <div id="floating-cart" class="fixed bottom-[65px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
-        <div onclick="switchView('cart-view')" class="bg-green-600 text-white p-3 rounded-xl flex justify-between items-center shadow-lg cursor-pointer">
+    <div id="floating-cart" class="fixed bottom-[80px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
+        <div onclick="switchView('cart-view')" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl flex justify-between items-center shadow-xl cursor-pointer">
             <div class="font-bold text-sm">
                 <span id="float-qty">1</span> Item(s) | <span id="float-total">₹0</span>
             </div>
-            <div class="font-bold text-sm flex items-center">
-                View Cart &rarr;
+            <div class="font-bold text-sm flex items-center gap-1">
+                Checkout <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 w-full bg-white border-t p-2 grid grid-cols-4 gap-1 text-gray-500 font-bold shadow-2xl z-20">
-        <button onclick="switchView('home-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Home</span></button>
-        <button onclick="switchView('track-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Track</span></button>
-        <button onclick="switchView('cart-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Cart</span></button>
-        <button onclick="switchView('support-view')" class="flex flex-col items-center hover:text-orange-500 p-1"><span class="text-xs">Support</span></button>
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-2 grid grid-cols-4 gap-1 shadow-[0_-4px_15px_-5px_rgba(0,0,0,0.1)] z-20 pb-4">
+        
+        <button id="nav-home-view" onclick="switchView('home-view')" class="nav-btn flex flex-col items-center justify-center text-orange-500 p-1">
+            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <span class="text-[10px] font-bold">Home</span>
+        </button>
+        
+        <button id="nav-track-view" onclick="switchView('track-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
+            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+            <span class="text-[10px] font-bold">Track</span>
+        </button>
+        
+        <button id="nav-cart-view" onclick="switchView('cart-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
+            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <span class="text-[10px] font-bold">Cart</span>
+        </button>
+        
+        <button id="nav-support-view" onclick="switchView('support-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
+            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <span class="text-[10px] font-bold">Support</span>
+        </button>
+
     </nav>
 
     <script>
@@ -127,39 +162,42 @@
         let customerLat = null; 
         let customerLon = null; 
 
-        // SMART CACHING FOR INSTANT LOAD SPEEDS
         function initApp() {
             let cachedData = localStorage.getItem('blinkup_cache');
-            
-            // If data exists on the phone, load it instantly (0.1 seconds)
             if (cachedData) {
                 db = JSON.parse(cachedData);
                 document.getElementById('loading').classList.add('hidden');
                 renderRestaurants();
                 switchView('home-view');
             }
-
-            // Fetch fresh data in the background anyway to keep it updated
             fetch(SCRIPT_URL + "?action=getData").then(res => res.json()).then(data => {
                 db = data; 
-                localStorage.setItem('blinkup_cache', JSON.stringify(db)); // Save for next time
-                
-                // If it was their first time loading, show it now
+                localStorage.setItem('blinkup_cache', JSON.stringify(db)); 
                 if (!cachedData) {
                     document.getElementById('loading').classList.add('hidden'); 
                     renderRestaurants(); 
                     switchView('home-view');
                 } else if (!document.getElementById('home-view').classList.contains('hidden')) {
-                    // Update the list quietly if they are still on the home screen
                     renderRestaurants();
                 }
             });
         }
-        initApp(); // Run it on startup
+        initApp(); 
 
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
+            
+            // NEW LOGIC: Changes the color of the bottom icons when tapped!
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-orange-500');
+                btn.classList.add('text-gray-400');
+            });
+            let activeIcon = document.getElementById('nav-' + viewId);
+            if(activeIcon) {
+                activeIcon.classList.remove('text-gray-400');
+                activeIcon.classList.add('text-orange-500');
+            }
             
             if(viewId === 'cart-view') {
                 updateCartView();
@@ -210,9 +248,9 @@
         function renderRestaurants() {
             let html = "";
             db.restaurants.forEach(r => {
-                html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer mb-4">
-                    <div class="w-16 h-16 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0"><img src="${r.image}" class="w-full h-full object-cover"></div>
-                    <div><h3 class="font-extrabold text-lg">${r.name}</h3><p class="text-xs text-green-500 font-bold">Open Now</p></div>
+                html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer mb-4 hover:shadow-md transition-shadow">
+                    <div class="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0"><img src="${r.image}" class="w-full h-full object-cover"></div>
+                    <div><h3 class="font-extrabold text-lg text-gray-800">${r.name}</h3><p class="text-xs text-green-500 font-bold bg-green-50 inline-block px-2 py-1 rounded mt-1">Open Now</p></div>
                 </div>`;
             });
             document.getElementById('restaurant-list').innerHTML = html;
@@ -231,17 +269,17 @@
             items.forEach(item => {
                 let qty = cart[item.id] ? cart[item.id].qty : 0;
                 let btnHtml = qty === 0 
-                    ? `<button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-6 py-1.5 rounded-lg shadow-sm">ADD</button>`
-                    : `<div class="flex items-center bg-orange-100 text-orange-600 font-bold rounded-lg border border-orange-200">
-                           <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, -1)" class="px-3 py-1.5 text-lg leading-none">-</button>
+                    ? `<button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="bg-orange-50 text-orange-600 border border-orange-200 text-sm font-bold px-6 py-2 rounded-xl shadow-sm">ADD</button>`
+                    : `<div class="flex items-center bg-orange-100 text-orange-600 font-bold rounded-xl border border-orange-200">
+                           <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, -1)" class="px-3 py-2 text-lg leading-none">-</button>
                            <span class="px-2 text-sm">${qty}</span>
-                           <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="px-3 py-1.5 text-lg leading-none">+</button>
+                           <button onclick="updateQty('${item.id}', '${item.name}', ${item.price_inr}, 1)" class="px-3 py-2 text-lg leading-none">+</button>
                        </div>`;
 
-                html += `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center mb-3">
+                html += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center mb-3">
                     <div>
-                        <h4 class="font-bold text-gray-800">${item.name}</h4>
-                        <p class="font-extrabold text-sm text-gray-600">₹${item.price_inr}</p>
+                        <h4 class="font-bold text-gray-800 text-base">${item.name}</h4>
+                        <p class="font-extrabold text-sm text-gray-600 mt-1">₹${item.price_inr}</p>
                     </div>
                     <div>${btnHtml}</div>
                 </div>`;
@@ -287,13 +325,13 @@
                 let c = cart[key]; 
                 let lineTotal = c.price * c.qty;
                 finalTotals.itemTotal += lineTotal;
-                html += `<div class="flex justify-between text-sm">
-                            <span>${c.name} <span class="text-xs text-gray-400">x${c.qty}</span></span>
-                            <span class="font-bold">₹${lineTotal}</span>
+                html += `<div class="flex justify-between text-sm py-1">
+                            <span class="text-gray-700 font-medium">${c.name} <span class="text-xs text-gray-400 ml-1">x${c.qty}</span></span>
+                            <span class="font-bold text-gray-800">₹${lineTotal}</span>
                          </div>`;
             }
             
-            document.getElementById('cart-items').innerHTML = html || "<p class='text-center text-gray-400'>Cart is empty.</p>";
+            document.getElementById('cart-items').innerHTML = html || "<p class='text-center text-gray-400 py-4'>Cart is empty.</p>";
             
             finalTotals.gst = Math.round(finalTotals.itemTotal * 0.05);
             document.getElementById('bill-item-total').innerText = "₹" + finalTotals.itemTotal;
@@ -302,14 +340,14 @@
             let banner = document.getElementById('free-delivery-banner');
             if (finalTotals.itemTotal === 0) {
                 banner.innerText = "Add items to unlock Free Delivery!";
-                banner.className = "bg-gray-100 text-gray-600 p-3 rounded-lg text-sm font-bold mb-4 text-center";
+                banner.className = "bg-gray-100 text-gray-600 p-3 rounded-xl text-sm font-bold mb-4 text-center";
             } else if (finalTotals.itemTotal < 300) {
                 let diff = 300 - finalTotals.itemTotal;
                 banner.innerText = `Add ₹${diff} more for Free Delivery!`;
-                banner.className = "bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-lg text-sm font-bold mb-4 text-center";
+                banner.className = "bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-xl text-sm font-bold mb-4 text-center";
             } else {
                 banner.innerText = "🎉 You've unlocked Free Delivery!";
-                banner.className = "bg-green-50 text-green-700 border border-green-200 p-3 rounded-lg text-sm font-bold mb-4 text-center";
+                banner.className = "bg-green-50 text-green-700 border border-green-200 p-3 rounded-xl text-sm font-bold mb-4 text-center";
             }
 
             finalTotals.delivery = null;
@@ -318,7 +356,6 @@
             updateGrandTotal();
         }
 
-        // UPDATED ONE-TIME USE COUPON LOGIC
         function applyCoupon() {
             let code = document.getElementById('coupon-code').value.trim().toUpperCase();
             let msg = document.getElementById('coupon-message');
@@ -330,7 +367,6 @@
             }
             
             if (code === "WELCOME10") {
-                // Check if they already used it on this phone
                 if (localStorage.getItem('used_WELCOME10') === 'true') {
                     msg.innerText = "This welcome code has already been used on this device.";
                     msg.className = "text-xs mt-1 font-bold text-red-600 block";
@@ -472,7 +508,6 @@
             .then(res => res.text())
             .then(id => { 
                 
-                // If they used WELCOME10, lock it out permanently for this device
                 if (finalTotals.couponApplied === "WELCOME10") {
                     localStorage.setItem('used_WELCOME10', 'true');
                 }
