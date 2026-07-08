@@ -18,7 +18,7 @@
         </button>
     </header>
 
-    <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Connecting to servers...</div>
+    <div id="loading" class="text-center mt-10 text-orange-500 font-bold animate-pulse">Loading amazing food...</div>
 
     <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
@@ -61,10 +61,10 @@
             </div>
             <div class="flex justify-between font-extrabold text-lg border-t pt-2 mt-2"><span>To Pay</span><span id="bill-grand-total">₹0</span></div>
             
-            <!-- Coupon Input Section -->
+            <!-- Coupon Input Section (HIDDEN PLACEHOLDER) -->
             <div class="pt-4 border-t mt-2">
                 <div class="flex gap-2">
-                    <input type="text" id="coupon-code" placeholder="WELCOME10 or BLINK15" class="w-full border p-2 rounded outline-none text-xs uppercase placeholder-gray-400">
+                    <input type="text" id="coupon-code" placeholder="Enter Coupon Code" class="w-full border p-2 rounded outline-none text-xs uppercase placeholder-gray-400">
                     <button onclick="applyCoupon()" class="bg-gray-800 text-white font-bold px-3 py-1 rounded text-xs hover:bg-gray-700">Apply</button>
                 </div>
                 <div id="coupon-message" class="text-[11px] mt-1 font-bold hidden"></div>
@@ -115,7 +115,7 @@
 
     <script>
         // --- PUT YOUR NEW WEB APP URL HERE ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec'; 
+        const SCRIPT_URL = 'YOUR_URL_HERE'; 
         
         const BASE_LAT = 26.5816;
         const BASE_LON = 86.1297;
@@ -127,12 +127,35 @@
         let customerLat = null; 
         let customerLon = null; 
 
-        fetch(SCRIPT_URL + "?action=getData").then(res => res.json()).then(data => {
-            db = data; 
-            document.getElementById('loading').classList.add('hidden'); 
-            renderRestaurants(); 
-            switchView('home-view');
-        });
+        // SMART CACHING FOR INSTANT LOAD SPEEDS
+        function initApp() {
+            let cachedData = localStorage.getItem('blinkup_cache');
+            
+            // If data exists on the phone, load it instantly (0.1 seconds)
+            if (cachedData) {
+                db = JSON.parse(cachedData);
+                document.getElementById('loading').classList.add('hidden');
+                renderRestaurants();
+                switchView('home-view');
+            }
+
+            // Fetch fresh data in the background anyway to keep it updated
+            fetch(SCRIPT_URL + "?action=getData").then(res => res.json()).then(data => {
+                db = data; 
+                localStorage.setItem('blinkup_cache', JSON.stringify(db)); // Save for next time
+                
+                // If it was their first time loading, show it now
+                if (!cachedData) {
+                    document.getElementById('loading').classList.add('hidden'); 
+                    renderRestaurants(); 
+                    switchView('home-view');
+                } else if (!document.getElementById('home-view').classList.contains('hidden')) {
+                    // Update the list quietly if they are still on the home screen
+                    renderRestaurants();
+                }
+            });
+        }
+        initApp(); // Run it on startup
 
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
@@ -295,6 +318,7 @@
             updateGrandTotal();
         }
 
+        // UPDATED ONE-TIME USE COUPON LOGIC
         function applyCoupon() {
             let code = document.getElementById('coupon-code').value.trim().toUpperCase();
             let msg = document.getElementById('coupon-message');
@@ -306,26 +330,36 @@
             }
             
             if (code === "WELCOME10") {
+                // Check if they already used it on this phone
+                if (localStorage.getItem('used_WELCOME10') === 'true') {
+                    msg.innerText = "This welcome code has already been used on this device.";
+                    msg.className = "text-xs mt-1 font-bold text-red-600 block";
+                    return;
+                }
+                
                 finalTotals.discount = Math.round(finalTotals.itemTotal * 0.10);
                 finalTotals.couponApplied = "WELCOME10";
                 msg.innerText = "🎉 WELCOME10 applied: 10% Off structural discount!";
                 msg.className = "text-xs mt-1 font-bold text-green-600 block";
                 discountRow.classList.remove('hidden');
+                
             } else if (code === "BLINK15") {
                 finalTotals.discount = Math.round(finalTotals.itemTotal * 0.15);
                 finalTotals.couponApplied = "BLINK15";
                 msg.innerText = "🎉 BLINK15 applied: 15% Off VIP discount!";
                 msg.className = "text-xs mt-1 font-bold text-green-600 block";
                 discountRow.classList.remove('hidden');
+                
             } else if (code === "") {
                 finalTotals.discount = 0;
                 finalTotals.couponApplied = "";
                 msg.classList.add('hidden');
                 discountRow.classList.add('hidden');
+                
             } else {
                 finalTotals.discount = 0;
                 finalTotals.couponApplied = "";
-                msg.innerText = "Invalid coupon code format.";
+                msg.innerText = "Invalid coupon code.";
                 msg.className = "text-xs mt-1 font-bold text-red-600 block";
                 discountRow.classList.add('hidden');
             }
@@ -382,7 +416,6 @@
                     return;
                 }
 
-                // Tier A: Small Orders Engine (Under ₹100)
                 if (finalTotals.itemTotal < 100) {
                     if(distance <= 1) fee = 20;
                     else if(distance <= 2) fee = 25;
@@ -391,7 +424,6 @@
                     else if(distance <= 6) fee = 70;
                     else fee = 90; 
                 } 
-                // Tier B: Regular Orders Engine (₹100 or More)
                 else {
                     if (finalTotals.itemTotal < 300) {
                         if(distance <= 1) fee = 0; 
@@ -439,9 +471,14 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(orderData) })
             .then(res => res.text())
             .then(id => { 
+                
+                // If they used WELCOME10, lock it out permanently for this device
+                if (finalTotals.couponApplied === "WELCOME10") {
+                    localStorage.setItem('used_WELCOME10', 'true');
+                }
+
                 let confirmationText = "Order Confirmed! Your Order ID is: " + id;
                 
-                // If order value qualifies for a bounce-back coupon reward
                 if (finalTotals.itemTotal >= 400) {
                     confirmationText += "\n\n🎉 BOOM! Because your order is above ₹400, use coupon code BLINK15 on your next purchase to get 15% off!";
                 }
