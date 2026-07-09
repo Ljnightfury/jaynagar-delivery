@@ -8,7 +8,6 @@
     <style>
         .hidden { display: none !important; } 
         
-        /* Smooth Fade Animation Upgrade */
         .view-section { 
             padding-bottom: 90px; 
             animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -24,9 +23,8 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <!-- Header (Upgraded with Clickable Logo to go Home) -->
+    <!-- Header -->
     <header class="bg-white text-purple-900 p-4 shadow-sm border-b border-gray-100 sticky top-0 z-20 flex justify-between items-center">
-        <!-- Added onclick function and cursor-pointer here -->
         <div class="flex items-center gap-2 cursor-pointer transition-transform active:scale-95" onclick="switchView('home-view')">
             <svg class="w-10 h-10 drop-shadow-sm" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 12 L28 32 L40 18 Z" fill="#b48eed" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
@@ -51,10 +49,20 @@
         Loading amazing food...
     </div>
 
-    <!-- Home View -->
+    <!-- Home View with Category Toggle -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
-        <h2 class="text-lg font-bold mb-4 text-gray-600 flex items-center gap-2">
-            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        
+        <!-- The New Food vs Grocery Switcher -->
+        <div class="bg-gray-100 p-1 rounded-xl flex mb-5 shadow-inner">
+            <button id="tab-restaurant" onclick="setCategory('restaurant')" class="flex-1 py-2.5 text-sm font-extrabold rounded-lg bg-white text-purple-700 shadow flex justify-center items-center gap-2 transition-all">
+                🍔 Food
+            </button>
+            <button id="tab-grocery" onclick="setCategory('grocery')" class="flex-1 py-2.5 text-sm font-extrabold rounded-lg text-gray-500 hover:text-gray-700 flex justify-center items-center gap-2 transition-all">
+                🛒 Mart
+            </button>
+        </div>
+
+        <h2 id="home-title" class="text-lg font-bold mb-4 text-gray-600 flex items-center gap-2">
             Explore Restaurants
         </h2>
         <div id="restaurant-list" class="space-y-4"></div>
@@ -157,7 +165,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION (Icons Restored!) -->
+    <!-- BOTTOM NAVIGATION -->
     <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-2 grid grid-cols-4 gap-1 shadow-[0_-4px_15px_-5px_rgba(0,0,0,0.1)] z-20 pb-4">
         <button id="nav-home-view" onclick="switchView('home-view')" class="nav-btn flex flex-col items-center justify-center text-purple-600 p-1">
             <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
@@ -190,9 +198,11 @@
         let currentRestId = null;
         let customerLat = null; 
         let customerLon = null; 
+        
+        // Default category is food
+        let currentCategory = 'restaurant'; 
 
         function initApp() {
-            // Load saved user details if they exist!
             if(localStorage.getItem('blinkup_name')) document.getElementById('cust-name').value = localStorage.getItem('blinkup_name');
             if(localStorage.getItem('blinkup_phone')) document.getElementById('cust-phone').value = localStorage.getItem('blinkup_phone');
             if(localStorage.getItem('blinkup_address')) document.getElementById('cust-address').value = localStorage.getItem('blinkup_address');
@@ -219,12 +229,10 @@
         initApp(); 
 
         function switchView(viewId) {
-            // Added haptic feedback for supported devices
             if (navigator.vibrate) navigator.vibrate(50);
             
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             
-            // Re-trigger animation
             let newView = document.getElementById(viewId);
             newView.classList.remove('hidden');
             newView.style.animation = 'none';
@@ -250,6 +258,27 @@
             
             if(viewId === 'menu-view') renderMenu(currentRestId); 
             window.scrollTo(0,0);
+        }
+
+        // Logic for toggling between Food and Grocery
+        function setCategory(cat) {
+            if (navigator.vibrate) navigator.vibrate(20);
+            currentCategory = cat;
+            
+            let tabRest = document.getElementById('tab-restaurant');
+            let tabGroc = document.getElementById('tab-grocery');
+            let homeTitle = document.getElementById('home-title');
+            
+            if(cat === 'restaurant') {
+                tabRest.className = "flex-1 py-2.5 text-sm font-extrabold rounded-lg bg-white text-purple-700 shadow flex justify-center items-center gap-2 transition-all";
+                tabGroc.className = "flex-1 py-2.5 text-sm font-extrabold rounded-lg text-gray-500 hover:text-gray-700 flex justify-center items-center gap-2 transition-all";
+                homeTitle.innerHTML = "Explore Restaurants";
+            } else {
+                tabGroc.className = "flex-1 py-2.5 text-sm font-extrabold rounded-lg bg-white text-purple-700 shadow flex justify-center items-center gap-2 transition-all";
+                tabRest.className = "flex-1 py-2.5 text-sm font-extrabold rounded-lg text-gray-500 hover:text-gray-700 flex justify-center items-center gap-2 transition-all";
+                homeTitle.innerHTML = "Fresh Groceries";
+            }
+            renderRestaurants();
         }
 
         function runTrackOrder() {
@@ -289,7 +318,20 @@
 
         function renderRestaurants() {
             let html = "";
-            db.restaurants.forEach(r => {
+            
+            // THE SECRET FILTER TRICK
+            let filteredList = db.restaurants.filter(r => {
+                // If the ID in the Google Sheet starts with "G", it is a grocery store!
+                let isGrocery = r.id.toString().toUpperCase().startsWith('G');
+                return currentCategory === 'grocery' ? isGrocery : !isGrocery;
+            });
+
+            if(filteredList.length === 0) {
+                let emptyWord = currentCategory === 'grocery' ? 'stores' : 'restaurants';
+                html = `<div class="text-center py-10 text-gray-400 font-bold">No ${emptyWord} open right now.</div>`;
+            }
+
+            filteredList.forEach(r => {
                 html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer mb-4 hover:shadow-md transition-shadow active:scale-[0.98]">
                     <div class="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0"><img src="${r.image}" loading="lazy" class="w-full h-full object-cover"></div>
                     <div><h3 class="font-extrabold text-lg text-gray-800">${r.name}</h3><p class="text-xs text-green-500 font-bold bg-green-50 inline-block px-2 py-1 rounded mt-1">Open Now</p></div>
@@ -330,7 +372,7 @@
         }
 
         function updateQty(id, name, price, change) {
-            if (navigator.vibrate) navigator.vibrate(20); // Small haptic bump
+            if (navigator.vibrate) navigator.vibrate(20); 
             if(!cart[id]) cart[id] = { name: name, price: price, qty: 0 };
             cart[id].qty += change;
             if (cart[id].qty <= 0) delete cart[id];
@@ -527,7 +569,6 @@
             let custPhone = document.getElementById('cust-phone').value;
             let custAddress = document.getElementById('cust-address').value;
 
-            // Auto-Save details for next time!
             localStorage.setItem('blinkup_name', custName);
             localStorage.setItem('blinkup_phone', custPhone);
             localStorage.setItem('blinkup_address', custAddress);
