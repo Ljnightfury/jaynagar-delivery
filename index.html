@@ -13,27 +13,18 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <!-- Header (Upgraded to White & Purple Theme) -->
     <header class="bg-white text-purple-900 p-4 shadow-sm border-b border-gray-100 sticky top-0 z-20 flex justify-between items-center">
         <div class="flex items-center gap-2">
-            
-            <!-- PURE CODE ORIGAMI BIRD LOGO -->
             <svg class="w-10 h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Top Wing -->
                 <path d="M12 12 L28 32 L40 18 Z" fill="#b48eed" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
-                <!-- Head/Beak -->
                 <path d="M28 32 L48 34 L58 40 L44 42 Z" fill="#9333ea" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
-                <!-- Bottom Wing/Tail -->
                 <path d="M28 32 L44 42 L24 58 L32 46 Z" fill="#7e22ce" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
-                <!-- String -->
                 <path d="M52 38 L48 46" stroke="#4c1d95" stroke-width="2"/>
                 <path d="M52 38 L56 46" stroke="#4c1d95" stroke-width="2"/>
-                <!-- Box -->
                 <rect x="46" y="46" width="12" height="12" fill="#c084fc" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
                 <path d="M52 46 L52 58" stroke="#4c1d95" stroke-width="2"/>
                 <path d="M46 52 L58 52" stroke="#4c1d95" stroke-width="2"/>
             </svg>
-            
             <h1 class="text-2xl font-extrabold tracking-tight text-purple-900">Blinkup</h1>
         </div>
         <button onclick="switchView('cart-view')" class="relative p-1 text-purple-900">
@@ -47,7 +38,6 @@
         Loading amazing food...
     </div>
 
-    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-lg font-bold mb-4 text-gray-600 flex items-center gap-2">
             <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -56,7 +46,6 @@
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
-    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
         <button onclick="switchView('home-view')" class="mb-4 text-sm text-purple-600 font-bold flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-full w-max border border-purple-100">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -66,7 +55,6 @@
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
-    <!-- Track View -->
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Track Order</h2>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
@@ -76,7 +64,6 @@
         </div>
     </main>
 
-    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Checkout</h2>
         <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-xl text-sm font-bold mb-4 text-center"></div>
@@ -86,10 +73,17 @@
             <h3 class="font-bold text-gray-700 border-b pb-2 mb-2">Bill Details</h3>
             <div class="flex justify-between text-gray-600"><span>Item Total</span><span id="bill-item-total" class="font-medium">₹0</span></div>
             <div class="flex justify-between text-gray-600"><span>GST (5%)</span><span id="bill-gst" class="font-medium">₹0</span></div>
-            <div class="flex justify-between text-purple-600 font-bold cursor-pointer bg-purple-50 p-2 rounded-lg -mx-2" onclick="calculateDelivery()">
-                <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Delivery Fee</span>
-                <span id="bill-delivery">Calc Loc &rarr;</span>
+            
+            <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 mt-2 mb-2">
+                <div class="flex justify-between text-purple-800 font-bold mb-2">
+                    <span class="flex items-center gap-1">📍 Delivery Fee</span>
+                    <span id="bill-delivery">Pending Location</span>
+                </div>
+                <button onclick="calculateDelivery()" id="btn-calc-loc" class="w-full bg-white text-purple-700 border-2 border-purple-300 font-bold py-2 rounded-lg text-sm shadow-sm hover:bg-purple-100 transition-colors">
+                    Tap to Calculate Delivery Fee
+                </button>
             </div>
+
             <div id="bill-discount-row" class="flex justify-between text-green-600 font-bold hidden">
                 <span>Coupon Discount</span><span id="bill-discount">-₹0</span>
             </div>
@@ -112,67 +106,54 @@
                 <option value="UPI">Pay via UPI</option>
                 <option value="COD">Cash on Delivery</option>
             </select>
-            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl text-lg shadow-lg disabled:bg-gray-400 transition-all">Place Order</button>
+            <button onclick="placeOrder()" id="btn-place-order" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl text-lg shadow-lg transition-all">Place Order</button>
         </div>
     </main>
 
-    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Support Center</h2>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
             <a href="https://wa.me/918851463530" class="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-md transition-colors">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
                 Chat with Lucky
             </a>
             <a href="https://wa.me/916206671465" class="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-md transition-colors">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
                 Chat with Mona
             </a>
             <a href="mailto:dragonlj6@gmail.com" class="flex items-center justify-center gap-2 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-4 rounded-xl shadow-md transition-colors mt-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 Email Support
             </a>
         </div>
     </main>
 
-    <!-- FLOATING CART SUMMARY -->
     <div id="floating-cart" class="fixed bottom-[80px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10">
         <div onclick="switchView('cart-view')" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl flex justify-between items-center shadow-xl cursor-pointer">
             <div class="font-bold text-sm">
                 <span id="float-qty">1</span> Item(s) | <span id="float-total">₹0</span>
             </div>
             <div class="font-bold text-sm flex items-center gap-1">
-                Checkout <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                Checkout &rarr;
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
     <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-2 grid grid-cols-4 gap-1 shadow-[0_-4px_15px_-5px_rgba(0,0,0,0.1)] z-20 pb-4">
         <button id="nav-home-view" onclick="switchView('home-view')" class="nav-btn flex flex-col items-center justify-center text-purple-600 p-1">
-            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-            <span class="text-[10px] font-bold">Home</span>
+            <span class="text-xs font-bold mt-1">Home</span>
         </button>
-        
         <button id="nav-track-view" onclick="switchView('track-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
-            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-            <span class="text-[10px] font-bold">Track</span>
+            <span class="text-xs font-bold mt-1">Track</span>
         </button>
-        
         <button id="nav-cart-view" onclick="switchView('cart-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
-            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-            <span class="text-[10px] font-bold">Cart</span>
+            <span class="text-xs font-bold mt-1">Cart</span>
         </button>
-        
         <button id="nav-support-view" onclick="switchView('support-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
-            <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <span class="text-[10px] font-bold">Support</span>
+            <span class="text-xs font-bold mt-1">Support</span>
         </button>
     </nav>
 
     <script>
         // --- PUT YOUR NEW WEB APP URL HERE ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztCCG3Rw_WY2WO_nt2FgjtaY85UImlE1YZd8moBRh0d4DQA546snx2_x-Hn5E7TR5gVg/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIGyijNWpo1qSzPLHf5BLmekqR1pEUMFNLP5m41-5K04n0EkdAM5dzuF5BiLFFQwg7gQ/exec'; 
         
         const BASE_LAT = 26.5816;
         const BASE_LON = 86.1297;
@@ -269,8 +250,9 @@
         function renderRestaurants() {
             let html = "";
             db.restaurants.forEach(r => {
+                // Added loading="lazy" to stop lagging
                 html += `<div onclick="openMenu('${r.id}', '${r.name}')" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer mb-4 hover:shadow-md transition-shadow">
-                    <div class="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0"><img src="${r.image}" class="w-full h-full object-cover"></div>
+                    <div class="w-20 h-20 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0"><img src="${r.image}" loading="lazy" class="w-full h-full object-cover"></div>
                     <div><h3 class="font-extrabold text-lg text-gray-800">${r.name}</h3><p class="text-xs text-green-500 font-bold bg-green-50 inline-block px-2 py-1 rounded mt-1">Open Now</p></div>
                 </div>`;
             });
@@ -320,14 +302,11 @@
         function updateCartCount() {
             let totalQty = 0;
             let totalPrice = 0;
-            
             for(let key in cart) {
                 totalQty += cart[key].qty;
                 totalPrice += (cart[key].price * cart[key].qty);
             }
-            
             document.getElementById('cart-count').innerText = totalQty;
-
             let floatCart = document.getElementById('floating-cart');
             if(totalQty > 0) {
                 floatCart.classList.remove('hidden');
@@ -371,8 +350,12 @@
                 banner.className = "bg-green-50 text-green-700 border border-green-200 p-3 rounded-xl text-sm font-bold mb-4 text-center";
             }
 
+            // Reset delivery fee visually when opening cart
             finalTotals.delivery = null;
-            document.getElementById('bill-delivery').innerText = "Calc Loc \u2192";
+            document.getElementById('bill-delivery').innerText = "Pending Location";
+            document.getElementById('btn-calc-loc').classList.remove('hidden');
+            document.getElementById('btn-calc-loc').innerText = "Tap to Calculate Delivery Fee";
+
             reapplyCoupon();
             updateGrandTotal();
         }
@@ -386,33 +369,28 @@
                 alert("Add items to your cart first!");
                 return;
             }
-            
             if (code === "WELCOME10") {
                 if (localStorage.getItem('used_WELCOME10') === 'true') {
                     msg.innerText = "This welcome code has already been used on this device.";
                     msg.className = "text-xs mt-1 font-bold text-red-600 block";
                     return;
                 }
-                
                 finalTotals.discount = Math.round(finalTotals.itemTotal * 0.10);
                 finalTotals.couponApplied = "WELCOME10";
                 msg.innerText = "🎉 WELCOME10 applied: 10% Off structural discount!";
                 msg.className = "text-xs mt-1 font-bold text-green-600 block";
                 discountRow.classList.remove('hidden');
-                
             } else if (code === "BLINK15") {
                 finalTotals.discount = Math.round(finalTotals.itemTotal * 0.15);
                 finalTotals.couponApplied = "BLINK15";
                 msg.innerText = "🎉 BLINK15 applied: 15% Off VIP discount!";
                 msg.className = "text-xs mt-1 font-bold text-green-600 block";
                 discountRow.classList.remove('hidden');
-                
             } else if (code === "") {
                 finalTotals.discount = 0;
                 finalTotals.couponApplied = "";
                 msg.classList.add('hidden');
                 discountRow.classList.add('hidden');
-                
             } else {
                 finalTotals.discount = 0;
                 finalTotals.couponApplied = "";
@@ -420,7 +398,6 @@
                 msg.className = "text-xs mt-1 font-bold text-red-600 block";
                 discountRow.classList.add('hidden');
             }
-            
             document.getElementById('bill-discount').innerText = "-₹" + finalTotals.discount;
             updateGrandTotal();
         }
@@ -430,7 +407,6 @@
                 let msg = document.getElementById('coupon-message');
                 let discountRow = document.getElementById('bill-discount-row');
                 let pct = finalTotals.couponApplied === "WELCOME10" ? 0.10 : 0.15;
-                
                 finalTotals.discount = Math.round(finalTotals.itemTotal * pct);
                 document.getElementById('bill-discount').innerText = "-₹" + finalTotals.discount;
                 discountRow.classList.remove('hidden');
@@ -441,18 +417,18 @@
             let btn = document.getElementById('btn-place-order');
             if(finalTotals.delivery === null) { 
                 document.getElementById('bill-grand-total').innerText = "Pending Loc"; 
-                btn.disabled = true;
                 return; 
             }
             finalTotals.grandTotal = finalTotals.itemTotal + finalTotals.gst + finalTotals.delivery - finalTotals.discount;
             if (finalTotals.grandTotal < 0) finalTotals.grandTotal = 0;
             document.getElementById('bill-grand-total').innerText = "₹" + finalTotals.grandTotal;
-            btn.disabled = false;
         }
 
         function calculateDelivery() {
             if(finalTotals.itemTotal === 0) return alert("Add items to cart first!");
-            document.getElementById('bill-delivery').innerText = "Getting Loc...";
+            
+            let calcBtn = document.getElementById('btn-calc-loc');
+            calcBtn.innerText = "📍 Getting Location...";
             
             navigator.geolocation.getCurrentPosition(pos => {
                 customerLat = pos.coords.latitude;
@@ -469,7 +445,7 @@
                 
                 if (distance > 10) {
                     alert(`You are ${finalTotals.distance}km away. We do not deliver beyond 10km.`);
-                    document.getElementById('bill-delivery').innerText = "Out of Zone";
+                    calcBtn.innerText = "⚠️ Out of Delivery Zone";
                     return;
                 }
 
@@ -493,15 +469,22 @@
                 }
                 
                 finalTotals.delivery = fee;
+                calcBtn.classList.add('hidden'); // Hide the button once successful!
                 document.getElementById('bill-delivery').innerText = "₹" + fee;
                 updateGrandTotal();
             }, err => {
-                alert("Location access needed for delivery calculation.");
-                document.getElementById('bill-delivery').innerText = "Loc Failed";
+                alert("Please allow location access so we can calculate your delivery fee.");
+                calcBtn.innerText = "⚠️ Location Failed. Tap to Try Again.";
             });
         }
 
         function placeOrder() {
+            // NEW CHECK: Prevent order if delivery fee isn't calculated
+            if(finalTotals.delivery === null) {
+                alert("Please tap the 'Calculate Delivery Fee' button above before placing your order!");
+                return;
+            }
+
             let orderData = { 
                 customer_name: document.getElementById('cust-name').value, 
                 phone: document.getElementById('cust-phone').value, 
@@ -519,7 +502,9 @@
                 lon: customerLon  
             };
             
-            if(!orderData.customer_name || !orderData.phone || !orderData.delivery_address) return alert("Please fill in all delivery details.");
+            if(!orderData.customer_name || !orderData.phone || !orderData.delivery_address) {
+                return alert("Please fill in all your delivery details.");
+            }
 
             let btn = document.getElementById('btn-place-order');
             btn.innerText = "Processing...";
@@ -528,17 +513,13 @@
             fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(orderData) })
             .then(res => res.text())
             .then(id => { 
-                
                 if (finalTotals.couponApplied === "WELCOME10") {
                     localStorage.setItem('used_WELCOME10', 'true');
                 }
-
                 let confirmationText = "Order Confirmed! Your Order ID is: " + id;
-                
                 if (finalTotals.itemTotal >= 400) {
                     confirmationText += "\n\n🎉 BOOM! Because your order is above ₹400, use coupon code BLINK15 on your next purchase to get 15% off!";
                 }
-                
                 alert(confirmationText);
                 cart = {};
                 finalTotals.couponApplied = "";
@@ -549,6 +530,7 @@
                 document.getElementById('cust-address').value = "";
                 switchView('home-view');
                 btn.innerText = "Place Order";
+                btn.disabled = false;
             }).catch(err => {
                 alert("Error placing order.");
                 btn.innerText = "Place Order";
