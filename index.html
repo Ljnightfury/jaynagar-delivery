@@ -17,7 +17,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* REWARD POPUP ANIMATION */
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
             70% { opacity: 1; transform: scale(1.05); }
@@ -31,7 +30,6 @@
 </head>
 <body class="bg-gray-50 font-sans text-gray-800">
 
-    <!-- Header -->
     <header class="bg-white text-purple-900 p-4 shadow-sm border-b border-gray-100 sticky top-0 z-20 flex justify-between items-center">
         <div class="flex items-center gap-2 cursor-pointer transition-transform active:scale-95" onclick="switchView('home-view')">
             <svg class="w-10 h-10 drop-shadow-sm" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,10 +55,7 @@
         Loading amazing food...
     </div>
 
-    <!-- Home View -->
     <main id="home-view" class="view-section p-4 max-w-md mx-auto hidden">
-        
-        <!-- Category Switcher -->
         <div class="bg-gray-100 p-1 rounded-xl flex mb-4 shadow-inner">
             <button id="tab-restaurant" onclick="setCategory('restaurant')" class="flex-1 py-2.5 text-sm font-extrabold rounded-lg bg-white text-purple-700 shadow flex justify-center items-center gap-2 transition-all">
                 🍔 Food
@@ -70,7 +65,6 @@
             </button>
         </div>
 
-        <!-- NEW Search Bar -->
         <div class="mb-5 relative">
             <input type="text" id="search-bar" onkeyup="renderRestaurants()" placeholder="Search by name..." class="w-full bg-white border border-gray-200 p-3 pl-10 rounded-xl outline-none focus:border-purple-500 transition-colors shadow-sm text-sm">
             <svg class="w-5 h-5 absolute left-3 top-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
@@ -82,7 +76,6 @@
         <div id="restaurant-list" class="space-y-4"></div>
     </main>
 
-    <!-- Menu View -->
     <main id="menu-view" class="view-section p-4 max-w-md mx-auto hidden">
         <button onclick="switchView('home-view')" class="mb-4 text-sm text-purple-600 font-bold flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-full w-max border border-purple-100 hover:bg-purple-100 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -92,7 +85,14 @@
         <div id="menu-list" class="space-y-4"></div>
     </main>
 
-    <!-- Track View -->
+    <main id="orders-view" class="view-section p-4 max-w-md mx-auto hidden">
+        <h2 class="text-xl font-extrabold mb-4 text-gray-800 flex items-center gap-2">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            My Past Orders
+        </h2>
+        <div id="past-orders-list" class="space-y-4"></div>
+    </main>
+
     <main id="track-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Track Order</h2>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
@@ -102,7 +102,6 @@
         </div>
     </main>
 
-    <!-- Cart View -->
     <main id="cart-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Checkout</h2>
         <div id="free-delivery-banner" class="bg-blue-50 text-blue-700 border border-blue-200 p-3 rounded-xl text-sm font-bold mb-4 text-center transition-all hidden"></div>
@@ -141,10 +140,7 @@
             <input type="text" id="cust-name" placeholder="Full Name" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
             <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
             <input type="text" id="cust-address" placeholder="Complete Delivery Address" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors">
-            
-            <!-- NEW Order Notes Field -->
             <textarea id="order-notes" placeholder="Delivery Instructions? (e.g. Call when near, Extra spicy)" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors text-sm resize-none" rows="2"></textarea>
-
             <select id="payment-method" class="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl outline-none focus:border-purple-500 transition-colors font-medium">
                 <option value="UPI">Pay via UPI</option>
                 <option value="COD">Cash on Delivery</option>
@@ -153,7 +149,6 @@
         </div>
     </main>
 
-    <!-- Support View -->
     <main id="support-view" class="view-section p-4 max-w-md mx-auto hidden">
         <h2 class="text-xl font-extrabold mb-4 text-gray-800">Support Center</h2>
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
@@ -172,7 +167,6 @@
         </div>
     </main>
 
-    <!-- VIP REWARD POP-UP -->
     <div id="reward-popup" class="fixed inset-0 bg-gray-900 bg-opacity-80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl animate-pop-in relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"></div>
@@ -190,7 +184,6 @@
         </div>
     </div>
 
-    <!-- Floating Cart -->
     <div id="floating-cart" class="fixed bottom-[80px] left-0 right-0 max-w-md mx-auto px-4 hidden z-10 transition-transform active:scale-95">
         <div onclick="switchView('cart-view')" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-2xl flex justify-between items-center shadow-xl cursor-pointer">
             <div class="font-bold text-sm">
@@ -202,8 +195,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-2 grid grid-cols-4 gap-1 shadow-[0_-4px_15px_-5px_rgba(0,0,0,0.1)] z-20 pb-4">
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 p-2 grid grid-cols-5 gap-1 shadow-[0_-4px_15px_-5px_rgba(0,0,0,0.1)] z-20 pb-4">
         <button id="nav-home-view" onclick="switchView('home-view')" class="nav-btn flex flex-col items-center justify-center text-purple-600 p-1">
             <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             <span class="text-[10px] font-bold">Home</span>
@@ -216,6 +208,12 @@
             <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
             <span class="text-[10px] font-bold">Cart</span>
         </button>
+        
+        <button id="nav-orders-view" onclick="switchView('orders-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            <span class="text-[10px] font-bold">Orders</span>
+        </button>
+
         <button id="nav-support-view" onclick="switchView('support-view')" class="nav-btn flex flex-col items-center justify-center text-gray-400 p-1">
             <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             <span class="text-[10px] font-bold">Support</span>
@@ -291,13 +289,52 @@
             }
             
             if(viewId === 'menu-view') renderMenu(currentRestId); 
+            if(viewId === 'orders-view') renderPastOrders(); // Render orders when tab is clicked
+            
             window.scrollTo(0,0);
+        }
+
+        // NEW: Load and Display Past Orders
+        function renderPastOrders() {
+            let pastOrders = JSON.parse(localStorage.getItem('blinkup_orders') || '[]');
+            let listDiv = document.getElementById('past-orders-list');
+            
+            if(pastOrders.length === 0) {
+                listDiv.innerHTML = `<div class="text-center py-10 text-gray-400">
+                    <div class="text-4xl mb-2">🧾</div>
+                    <p class="font-bold">No past orders found on this device.</p>
+                </div>`;
+                return;
+            }
+
+            let html = "";
+            pastOrders.forEach(order => {
+                let itemsText = "";
+                for(let k in order.items) {
+                    itemsText += `${order.items[k].qty}x ${order.items[k].name}, `;
+                }
+                itemsText = itemsText.slice(0, -2); 
+                
+                html += `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4">
+                    <div class="flex justify-between border-b pb-2 mb-2">
+                        <span class="font-bold text-purple-700 text-sm">Order #${order.id}</span>
+                        <span class="text-xs text-gray-500 font-bold">${order.date}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 leading-relaxed">${itemsText}</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Processing</span>
+                        <span class="font-black text-gray-800">₹${order.total}</span>
+                    </div>
+                </div>`;
+            });
+            listDiv.innerHTML = html;
         }
 
         function setCategory(cat) {
             if (navigator.vibrate) navigator.vibrate(20);
             currentCategory = cat;
-            document.getElementById('search-bar').value = ''; // Clear search when switching
+            document.getElementById('search-bar').value = ''; 
             
             let tabRest = document.getElementById('tab-restaurant');
             let tabGroc = document.getElementById('tab-grocery');
@@ -625,7 +662,6 @@
             localStorage.setItem('blinkup_phone', custPhone);
             localStorage.setItem('blinkup_address', custAddress);
 
-            // Combine address and notes so it appears nicely in your Google Sheet
             let finalAddress = orderNotes ? `${custAddress} | Notes: ${orderNotes}` : custAddress;
 
             let orderData = { 
@@ -663,6 +699,17 @@
                     localStorage.removeItem('earned_BLINK15');
                 }
 
+                // NEW: Save the digital receipt to their phone!
+                let pastOrders = JSON.parse(localStorage.getItem('blinkup_orders') || '[]');
+                let newOrder = {
+                    id: id.replace(/\s+/g, ''), 
+                    date: new Date().toLocaleDateString(),
+                    items: cart,
+                    total: finalTotals.grandTotal
+                };
+                pastOrders.unshift(newOrder); // Add to the very top of the list
+                localStorage.setItem('blinkup_orders', JSON.stringify(pastOrders));
+
                 alert("Order Confirmed! Your Order ID is: " + id);
                 
                 let totalSpent = finalTotals.itemTotal; 
@@ -671,7 +718,7 @@
                 finalTotals.couponApplied = "";
                 finalTotals.discount = 0;
                 document.getElementById('coupon-code').value = "";
-                document.getElementById('order-notes').value = ""; // Clear notes
+                document.getElementById('order-notes').value = ""; 
                 updateCartCount();
                 btn.innerText = "Place Order";
                 btn.disabled = false;
@@ -680,7 +727,7 @@
                     localStorage.setItem('earned_BLINK15', 'true');
                     document.getElementById('reward-popup').classList.remove('hidden');
                 } else {
-                    switchView('home-view');
+                    switchView('orders-view'); // Auto-switch them to see their new receipt!
                 }
                 
             }).catch(err => {
